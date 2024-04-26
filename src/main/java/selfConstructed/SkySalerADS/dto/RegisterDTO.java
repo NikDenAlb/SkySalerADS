@@ -1,9 +1,14 @@
 package selfConstructed.SkySalerADS.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import selfConstructed.SkySalerADS.model.Role;
 
 @Data
-public class Register {
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegisterDTO {
 
     private String username;
     private String password;

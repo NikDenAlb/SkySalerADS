@@ -1,9 +1,13 @@
 package selfConstructed.SkySalerADS.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class Login {
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginDTO {
 
     private String username;
     private String password;
