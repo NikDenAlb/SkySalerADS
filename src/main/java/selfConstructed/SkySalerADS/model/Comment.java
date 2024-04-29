@@ -1,9 +1,9 @@
 package selfConstructed.SkySalerADS.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -14,32 +14,32 @@ import java.time.LocalDateTime;
 public class Comment {
 
     /**
-     * Автор комментария.
+     * Author of the comment.
      */
     private String author;
 
     /**
-     * Ссылка на изображение автора комментария.
+     * Link to image of comment author.
      */
     private String authorImage;
 
     /**
-     * Имя автора комментария.
+     * Comment author's name.
      */
     private String authorFirstName;
 
     /**
-     * Дата и время создания комментария.
+     * Date and time the comment was created.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Первичный ключ комментария.
+     * Primary key of the comment.
      */
     private Long pk;
 
     /**
-     * Текст комментария.
+     * Comment text.
      */
     private String text;
 }

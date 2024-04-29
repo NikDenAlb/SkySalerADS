@@ -11,37 +11,38 @@ import lombok.NoArgsConstructor;
 public class User {
 
     /**
-     * Идентификатор пользователя.
+     * User ID.
      */
-    private int id;
+    private Integer id;
 
     /**
-     * Электронная почта пользователя.7
+     * User email.
      */
     private String email;
 
     /**
-     * Имя пользователя.
+     *
+     * Username.
      */
     private String firstName;
 
     /**
-     * Фамилия пользователя.
+     * User's last name.
      */
     private String lastName;
 
     /**
-     * Телефон пользователя.
+     * User's phone number.
      */
     private String phone;
 
     /**
-     * Роль пользователя (например, "USER").
+     * User role (for example, "USER").
      */
     private String role;
 
     /**
-     * URL изображения пользователя.
+     * User image URL.
      */
     private String image;
 }

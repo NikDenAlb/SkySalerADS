@@ -1,38 +1,46 @@
 package selfConstructed.SkySalerADS.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Ad {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     /**
-     * Автор объявления.
+     * Author of the ad.
      */
     private String author;
 
     /**
-     * Ссылка на изображение объявления.
+     * Link to ad image.
      */
     private String image;
 
     /**
-     * Первичный ключ объявления.
+     * Declaration primary key.
      */
     private Long pk;
 
     /**
-     * Цена объявления.
+     * Ad price.
      */
     private Double price;
 
     /**
-     * Заголовок объявления.
+     * Headline.
      */
     private String title;
 }

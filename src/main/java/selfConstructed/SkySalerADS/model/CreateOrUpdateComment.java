@@ -4,14 +4,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для создания или обновления комментария.
+ * Model for creating or updating a comment.
  */
 @Data
 @NoArgsConstructor
 public class CreateOrUpdateComment {
 
     /**
-     * Текст комментария.
+     * Comment text.
      */
     private String text;
 }

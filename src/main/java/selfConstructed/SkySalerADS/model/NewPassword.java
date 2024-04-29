@@ -4,19 +4,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для изменения пароля.
+ * Model for changing password.
  */
 @Data
 @NoArgsConstructor
 public class NewPassword {
 
     /**
-     * Текущий пароль пользователя.
+     * Current user password.
      */
     private String currentPassword;
 
     /**
-     * Новый пароль пользователя.
+     * New user password.
      */
     private String newPassword;
 }

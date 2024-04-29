@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 public class CreateOrUpdateAd {
 
     /**
-     * Заголовок объявления.
+     * Headline.
      */
     private String title;
 
     /**
-     * Цена объявления.
+     * Ad price.
      */
-    private double price;
+    private Double price;
 
     /**
-     * Описание объявления.
+     * Description of the ad.
      */
     private String description;
 }
