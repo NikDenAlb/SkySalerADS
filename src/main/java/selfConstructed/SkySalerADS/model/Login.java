@@ -4,19 +4,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для входа пользователя в систему.
+ * Model for user login.
  */
 @Data
 @NoArgsConstructor
 public class Login {
 
     /**
-     * Имя пользователя.
+     * Username.
      */
     private String username;
 
     /**
-     * Пароль пользователя.
+     * User password.
      */
     private String password;
 }

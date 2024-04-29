@@ -4,39 +4,39 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Модель для регистрации пользователя.
+ * Model for user registration.
  */
 @Data
 @NoArgsConstructor
 public class Register {
 
     /**
-     * Имя пользователя.
+     * Username.
      */
     private String username;
 
     /**
-     * Пароль пользователя.
+     * User password.
      */
     private String password;
 
     /**
-     * Имя пользователя.
+     * Username.
      */
     private String firstName;
 
     /**
-     * Фамилия пользователя.
+     * User last name.
      */
     private String lastName;
 
     /**
-     * Телефон пользователя.
+     * User's phone number.
      */
     private String phone;
 
     /**
-     * Роль пользователя.
+     * User role.
      */
     private String role;
 }
