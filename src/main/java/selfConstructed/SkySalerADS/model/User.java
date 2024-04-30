@@ -1,27 +1,29 @@
 package selfConstructed.SkySalerADS.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Модель пользователя.
- */
+import java.util.UUID;
+
+
 @Data
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
-
     /**
      * User ID.
      */
-    private Integer id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     /**
      * User email.
      */
     private String email;
 
     /**
-     *
      * Username.
      */
     private String firstName;
@@ -39,7 +41,9 @@ public class User {
     /**
      * User role (for example, "USER").
      */
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     /**
      * User image URL.
