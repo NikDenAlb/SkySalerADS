@@ -4,10 +4,9 @@
 
 CREATE TABLE ad
 (
-    id     UUID PRIMARY KEY,
     author TEXT,
     image  TEXT,
-    pk     BIGINT,
+    pk BIGINT PRIMARY KEY,
     price  DOUBLE PRECISION,
     title  TEXT
 )

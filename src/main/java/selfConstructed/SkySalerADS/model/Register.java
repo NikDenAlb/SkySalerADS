@@ -1,9 +1,10 @@
 package selfConstructed.SkySalerADS.model;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 /**
@@ -12,9 +13,14 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "register")
 public class Register {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
     /**
      * Username.
@@ -46,5 +52,5 @@ public class Register {
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private String role;
+    private Role role;
 }

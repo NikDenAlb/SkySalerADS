@@ -1,25 +1,19 @@
 package selfConstructed.SkySalerADS.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "ad")
 public class Ad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
     /**
      * Author of the ad.
      */
@@ -33,6 +27,8 @@ public class Ad {
     /**
      * Declaration primary key.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long pk;
 
     /**
