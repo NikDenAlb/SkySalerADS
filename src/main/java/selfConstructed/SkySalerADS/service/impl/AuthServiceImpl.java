@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import selfConstructed.SkySalerADS.dto.Register;
+import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.service.AuthService;
 
 @Service
@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public boolean register(Register register) {
+    public boolean register(RegisterDTO register) {
         if (manager.userExists(register.getUsername())) {
             return false;
         }
