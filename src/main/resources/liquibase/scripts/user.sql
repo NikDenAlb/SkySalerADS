@@ -4,9 +4,10 @@
 
 CREATE TABLE ad
 (
+    id    UUID PRIMARY KEY,
     author TEXT,
-    image  TEXT,
-    pk BIGINT PRIMARY KEY,
+    image bytea,
+    pk    BIGINT,
     price  DOUBLE PRECISION,
     title  TEXT
 )
@@ -20,40 +21,6 @@ CREATE TABLE comment
     createdAt       TIMESTAMP,
     pk              BIGINT,
     text            TEXT
-);
-CREATE TABLE create_or_update_ad
-(
-    id          UUID PRIMARY KEY,
-    title       TEXT,
-    price       DOUBLE PRECISION,
-    description TEXT
-);
-CREATE TABLE create_or_update_comment
-(
-    id   UUID PRIMARY KEY,
-    text TEXT
-);
-CREATE TABLE login
-(
-    id       UUID PRIMARY KEY,
-    username TEXT,
-    password TEXT
-);
-CREATE TABLE new_password
-(
-    id              UUID PRIMARY KEY,
-    currentPassword TEXT,
-    newPassword     TEXT
-);
-CREATE TABLE register
-(
-    id         UUID PRIMARY KEY,
-    username   TEXT,
-    password   TEXT,
-    first_name TEXT,
-    last_name  TEXT,
-    phone      TEXT,
-    role       TEXT
 );
 CREATE TABLE users
 (
