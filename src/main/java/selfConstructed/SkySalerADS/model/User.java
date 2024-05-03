@@ -53,5 +53,5 @@ public class User {
     /**
      * User image URL.
      */
-    private String image;
+    private byte[] image;
 }

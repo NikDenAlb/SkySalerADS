@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,12 +27,14 @@ public class Comment {
     /**
      * Author of the comment.
      */
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
 
     /**
      * Link to image of comment author.
      */
-    private String authorImage;
+    private byte[] authorImage;
 
     /**
      * Comment author's name.
