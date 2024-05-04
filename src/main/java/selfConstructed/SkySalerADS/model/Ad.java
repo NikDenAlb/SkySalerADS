@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -16,13 +14,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "ad")
 public class Ad {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
     /**
      * Author of the ad.
      */
@@ -33,12 +24,14 @@ public class Ad {
     /**
      * Link to ad image.
      */
-    private byte[] image;
+    private String image;
 
     /**
      * Declaration primary key.
      */
-    private Long pk;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer pk;
 
     /**
      * Ad price.
