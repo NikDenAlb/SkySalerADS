@@ -3,7 +3,6 @@ package selfConstructed.SkySalerADS.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import selfConstructed.SkySalerADS.model.User;
 
 import java.time.LocalDateTime;
 
@@ -11,10 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDTO {
-    private User author;
-    private byte[] authorImage;
+    private UserDTO author;
+    private String authorImage;
     private String authorFirstName;
     private LocalDateTime createdAt;
-    private int pk;
+    private Integer pk;
     private String text;
 }

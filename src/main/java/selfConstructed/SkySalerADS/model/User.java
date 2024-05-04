@@ -2,10 +2,8 @@ package selfConstructed.SkySalerADS.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 
 @Data
@@ -17,12 +15,8 @@ public class User {
      * User ID.
      */
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     /**
      * User email.
      */
@@ -39,6 +33,10 @@ public class User {
     private String lastName;
 
     /**
+     * User's last name.
+     */
+    private String password;
+    /**
      * User's phone number.
      */
     private String phone;
@@ -53,5 +51,5 @@ public class User {
     /**
      * User image URL.
      */
-    private byte[] image;
+    private String image;
 }

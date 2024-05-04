@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,13 +15,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "comment")
 public class Comment {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
     /**
      * Author of the comment.
      */
@@ -34,7 +25,7 @@ public class Comment {
     /**
      * Link to image of comment author.
      */
-    private byte[] authorImage;
+    private String authorImage;
 
     /**
      * Comment author's name.
@@ -49,6 +40,8 @@ public class Comment {
     /**
      * Primary key of the comment.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pk;
 
     /**

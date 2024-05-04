@@ -4,27 +4,25 @@
 
 CREATE TABLE ad
 (
-    id    UUID PRIMARY KEY,
     author TEXT,
-    image bytea,
-    pk    BIGINT,
+    image TEXT,
+    pk    BIGINT PRIMARY KEY,
     price  DOUBLE PRECISION,
     title  TEXT
 )
 ;
 CREATE TABLE comment
 (
-    id              UUID PRIMARY KEY,
     author          TEXT,
     authorImage     TEXT,
     authorFirstName TEXT,
     createdAt       TIMESTAMP,
-    pk              BIGINT,
+    pk BIGINT PRIMARY KEY,
     text            TEXT
 );
 CREATE TABLE users
 (
-    id         UUID PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     email      TEXT,
     first_name TEXT,
     last_name  TEXT,
