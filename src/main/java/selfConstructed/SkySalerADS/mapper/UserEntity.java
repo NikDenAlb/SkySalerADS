@@ -1,6 +1,7 @@
 package selfConstructed.SkySalerADS.mapper;
 
 import org.mapstruct.Mapper;
+import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.model.User;
 
@@ -8,5 +9,5 @@ import selfConstructed.SkySalerADS.model.User;
 public interface UserEntity {
     UserDTO toDTO(User user);
 
-    User toModel(UserDTO userDTO);
+    User toModel(RegisterDTO registerDTO);
 }
