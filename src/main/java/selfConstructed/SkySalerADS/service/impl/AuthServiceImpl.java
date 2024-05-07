@@ -1,46 +1,48 @@
 package selfConstructed.SkySalerADS.service.impl;
 
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
+import selfConstructed.SkySalerADS.model.Role;
 import selfConstructed.SkySalerADS.service.AuthService;
+import selfConstructed.SkySalerADS.service.UserService;
+
+import javax.transaction.Transactional;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserDetailsManager manager;
+    private final AuthenticationManager manager;
     private final PasswordEncoder encoder;
+    private final UserService userService;
 
-    public AuthServiceImpl(UserDetailsManager manager,
-                           PasswordEncoder passwordEncoder) {
-        this.manager = manager;
-        this.encoder = passwordEncoder;
+    @Transactional
+    @Override
+    public boolean login(String login, String password) {
+        log.info("try to log in to the user's system");
+        userService.checkUserExists(login);
+
+        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return authentication.isAuthenticated();
     }
 
     @Override
-    public boolean login(String userName, String password) {
-        if (!manager.userExists(userName)) {
-            return false;
+    public boolean register(RegisterDTO registerDTO, Role role) {
+        log.info("user registration");
+        if (userService.checkUserForRegisterOk(registerDTO.getLogin())) {
+            registerDTO.setRole(role);
+            registerDTO.setPassword(encoder.encode(registerDTO.getPassword()));
+            userService.createUser(registerDTO);
         }
-        UserDetails userDetails = manager.loadUserByUsername(userName);
-        return encoder.matches(password, userDetails.getPassword());
-    }
-
-    @Override
-    public boolean register(RegisterDTO register) {
-        if (manager.userExists(register.getUsername())) {
-            return false;
-        }
-        manager.createUser(
-                User.builder()
-                        .passwordEncoder(this.encoder::encode)
-                        .password(register.getPassword())
-                        .username(register.getUsername())
-                        .roles(register.getRole().name())
-                        .build());
         return true;
     }
 

@@ -22,5 +22,6 @@ public class RegisterDTO {
     private String lastName;
     @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}", message = "Invalid characters in license plate")
     private String phone;
+    private String login;
     private Role role;
 }
