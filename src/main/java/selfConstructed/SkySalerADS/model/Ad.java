@@ -31,7 +31,7 @@ public class Ad {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pk;
+    private Long pk;
 
     /**
      * Ad price.
