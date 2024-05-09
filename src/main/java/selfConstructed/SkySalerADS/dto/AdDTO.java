@@ -7,6 +7,6 @@ public class AdDTO {
     private Integer author;
     private String image;
     private Long pk;
-    private Integer price;
+    private Double price;
     private String title;
 }

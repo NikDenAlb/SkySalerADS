@@ -16,7 +16,12 @@ import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.service.CommentService;
 
 import java.util.Optional;
-
+/**
+ * The {@code CommentServiceImpl} class implements the {@link CommentService} interface,
+ * providing methods for managing comments on advertisements.
+ *
+ * @author shinkevich oleg
+ */
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {

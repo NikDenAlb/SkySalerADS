@@ -12,6 +12,12 @@ import selfConstructed.SkySalerADS.service.AdService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The {@code AdServiceImpl} class implements the {@link AdService} interface,
+ * providing methods for managing advertisements.
+ *
+ * @author shinkevich oleg
+ */
 @Service
 @AllArgsConstructor
 public class AdServiceImpl implements AdService {
@@ -53,6 +59,7 @@ public class AdServiceImpl implements AdService {
         updatedAd.setTitle(existingAd.getTitle());
         updatedAd.setPrice(existingAd.getPrice());
         updatedAd.setImage(existingAd.getImage());
+
         return adMapper.toDto(adRepository.save(updatedAd));
     }
 
