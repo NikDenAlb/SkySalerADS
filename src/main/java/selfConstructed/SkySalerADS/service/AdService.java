@@ -5,15 +5,15 @@ import selfConstructed.SkySalerADS.dto.AdDTO;
 import java.util.List;
 
 public interface AdService {
-    AdDTO createAd(AdDTO adDTO, Integer userId);
+    AdDTO createAd(AdDTO adDTO, Long userId);
 
     AdDTO updateAd(AdDTO adDTO);
 
-    void deleteAd(Integer adId, Integer userId);
+    void deleteAd(Long adId, Long userId);
 
-    AdDTO getAdById(Integer adId);
+    AdDTO getAdById(Long adId);
 
     List<AdDTO> getAllAds();
 
-    List<AdDTO> getAdsByUserId(Integer userId);
+    List<AdDTO> getAdsByUserId(Long userId);
 }

@@ -7,7 +7,7 @@ import selfConstructed.SkySalerADS.model.Ad;
 
 import java.util.List;
 
-public interface AdRepository extends JpaRepository<Ad, Integer> {
-    @Query(nativeQuery = true,value = "SELECT * FROM ad WHERE author_user_id= :userId")
-    List<Ad> findByAuthorId(@Param("userid")Integer userId);
+public interface AdRepository extends JpaRepository<Ad, Long> {
+    @Query(nativeQuery = true, value = "SELECT * FROM ad WHERE author_user_id= :userid")
+    List<Ad> findByAuthorId(@Param("userid") Long userId);
 }

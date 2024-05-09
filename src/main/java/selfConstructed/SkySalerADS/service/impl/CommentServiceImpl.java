@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
      * @return the created comment as a DTO object
      */
     @Override
-    public CommentDTO createComment(CommentDTO commentDTO, Integer adId, Integer userId) {
+    public CommentDTO createComment(CommentDTO commentDTO, Long adId, Long userId) {
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new IllegalArgumentException("Ad not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -86,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws UnauthorizedException    if the user does not have permission to delete the comment.
      */
     @Override
-    public void deleteComment(Integer commentId, Integer userId) throws CommentNotFoundException, UnauthorizedException {
+    public void deleteComment(Long commentId, Long userId) throws CommentNotFoundException, UnauthorizedException {
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
 

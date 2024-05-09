@@ -29,7 +29,7 @@ public class AdServiceImpl implements AdService {
      * @return the created advertisement as a DTO object
      */
     @Override
-    public AdDTO createAd(AdDTO adDTO, Integer userId) {
+    public AdDTO createAd(AdDTO adDTO, Long userId) {
         Ad ad = adMapper.toModel(adDTO);
         User user = new User();
         user.setId(userId);
@@ -63,7 +63,7 @@ public class AdServiceImpl implements AdService {
      * @param userId the identifier of the user attempting to delete the advertisement
      */
     @Override
-    public void deleteAd(Integer adId, Integer userId) {
+    public void deleteAd(Long adId, Long userId) {
         Ad ad = adRepository.findById(adId)
                 .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
 
@@ -81,7 +81,7 @@ public class AdServiceImpl implements AdService {
      * @return the advertisement as a DTO object
      */
     @Override
-    public AdDTO getAdById(Integer adId) {
+    public AdDTO getAdById(Long adId) {
         Ad ad = adRepository.findById(adId)
                 .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
         return adMapper.toDto(ad);
@@ -107,7 +107,7 @@ public class AdServiceImpl implements AdService {
      * @return the list of advertisements created by the specified user as DTO objects
      */
     @Override
-    public List<AdDTO> getAdsByUserId(Integer userId) {
+    public List<AdDTO> getAdsByUserId(Long userId) {
         List<Ad> ads = adRepository.findByAuthorId(userId);
         return ads.stream()
                 .map(adMapper::toDto)
