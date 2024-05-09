@@ -29,7 +29,7 @@ public class UserServiceImplements implements UserService {
     @Override
     public boolean checkUserForRegisterOk(String login) {
         if (userRepository.findUserByLoginIgnoreCase(login).isPresent()) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User not found");
         }
         return true;
     }
@@ -38,7 +38,7 @@ public class UserServiceImplements implements UserService {
     public boolean checkUserExists(String login) {
         log.info("Try to check whether the login is used or not");
         userRepository.findUserByLoginIgnoreCase(login)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         return true;
     }
 }

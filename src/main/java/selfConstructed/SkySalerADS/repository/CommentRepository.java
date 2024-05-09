@@ -5,5 +5,5 @@ import selfConstructed.SkySalerADS.model.Comment;
 
 import java.util.UUID;
 
-public interface CommentRepository extends JpaRepository<Comment, UUID> {
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
 }
