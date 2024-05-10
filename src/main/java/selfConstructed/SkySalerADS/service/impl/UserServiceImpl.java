@@ -2,7 +2,10 @@ package selfConstructed.SkySalerADS.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.exception.UserNotFoundException;
@@ -14,7 +17,7 @@ import selfConstructed.SkySalerADS.service.UserService;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImplements implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserEntity userMapper;
 
@@ -41,4 +44,26 @@ public class UserServiceImplements implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return true;
     }
+
+    @Transactional
+    @Override
+    public UserDTO getUserMe() {
+        return userMapper.toDTO(getUserFromAuthentication());
+    }
+
+    @Transactional
+    @Override
+    public User getUserFromAuthentication() {
+        log.info("Try to get user from authentication");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return getUser(authentication.getName());
+    }
+
+    @Transactional
+    @Override
+    public User getUser(String login) {
+        return userRepository.findUserByLoginIgnoreCase(login)
+                .orElseThrow(() -> new UserNotFoundException("No User with login " + login + " in DB"));
+    }
+
 }
