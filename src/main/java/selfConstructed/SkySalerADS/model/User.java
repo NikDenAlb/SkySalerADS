@@ -20,7 +20,7 @@ public class User {
     /**
      * User login.
      */
-    private String login;
+    private String username;
 
     /**
      * Username.

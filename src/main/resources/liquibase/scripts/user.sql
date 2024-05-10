@@ -23,7 +23,7 @@ CREATE TABLE comment
 CREATE TABLE users
 (
     id BIGINT PRIMARY KEY,
-    login TEXT,
+    username TEXT,
     first_name TEXT,
     last_name  TEXT,
     phone      TEXT,

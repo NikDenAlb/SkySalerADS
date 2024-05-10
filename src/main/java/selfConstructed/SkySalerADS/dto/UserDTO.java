@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class UserDTO {
     private Integer pk;
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Enter a correct email")
-    private String login;
+    private String username;
     private String firstName;
     private String lastName;
     @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}", message = "Invalid characters in license plate")

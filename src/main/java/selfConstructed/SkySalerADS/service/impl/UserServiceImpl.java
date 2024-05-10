@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+import selfConstructed.SkySalerADS.exception.UserAlreadyHereException;
 import selfConstructed.SkySalerADS.exception.UserNotFoundException;
 import selfConstructed.SkySalerADS.mapper.UserEntity;
 import selfConstructed.SkySalerADS.model.User;
@@ -31,8 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkUserForRegisterOk(String login) {
-        if (userRepository.findUserByLoginIgnoreCase(login).isPresent()) {
-            throw new UserNotFoundException("User not found");
+        if (userRepository.findUsersByUsernameIgnoreCase(login).isPresent()) {
+            throw new UserAlreadyHereException("User is found");
         }
         return true;
     }
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserExists(String login) {
         log.info("Try to check whether the login is used or not");
-        userRepository.findUserByLoginIgnoreCase(login)
+        userRepository.findUsersByUsernameIgnoreCase(login)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return true;
     }
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getUser(String login) {
-        return userRepository.findUserByLoginIgnoreCase(login)
+        return userRepository.findUsersByUsernameIgnoreCase(login)
                 .orElseThrow(() -> new UserNotFoundException("No User with login " + login + " in DB"));
     }
 

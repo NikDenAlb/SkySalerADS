@@ -13,4 +13,9 @@ public class AllExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("Пользователь не найден");
     }
+    @ExceptionHandler(UserAlreadyHereException.class)
+    public ResponseEntity<String> userAlreadyHereException(UserAlreadyHereException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Пользователь найден");
+    }
 }

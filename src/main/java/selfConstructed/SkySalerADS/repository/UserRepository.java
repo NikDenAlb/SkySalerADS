@@ -6,5 +6,5 @@ import selfConstructed.SkySalerADS.model.User;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findUserByLoginIgnoreCase(String login);
+    Optional<User> findUsersByUsernameIgnoreCase(String login);
 }
