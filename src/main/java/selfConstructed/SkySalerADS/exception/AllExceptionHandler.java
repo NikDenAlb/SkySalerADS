@@ -8,14 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class AllExceptionHandler {
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> userNotFoundExceptionHandler(UserNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Пользователь не найден");
-    }
-    @ExceptionHandler(UserAlreadyHereException.class)
-    public ResponseEntity<String> userAlreadyHereException(UserAlreadyHereException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body("Пользователь найден");
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> runtimeExceptionHandler(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.MULTI_STATUS)
+                .body(e.getMessage());
     }
 }

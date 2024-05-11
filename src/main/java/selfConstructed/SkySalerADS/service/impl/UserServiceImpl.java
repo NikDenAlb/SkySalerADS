@@ -4,12 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+import selfConstructed.SkySalerADS.exception.SamePasswordException;
 import selfConstructed.SkySalerADS.exception.UserAlreadyHereException;
 import selfConstructed.SkySalerADS.exception.UserNotFoundException;
+import selfConstructed.SkySalerADS.exception.WrongOldPasswordException;
 import selfConstructed.SkySalerADS.mapper.UserEntity;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
@@ -67,4 +72,23 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("No User with login " + login + " in DB"));
     }
 
+    @Transactional
+    @Override
+    public NewPasswordDTO setPassword(NewPasswordDTO newPasswordDTO) {
+        log.info("start setting new password");
+        if (newPasswordDTO.getCurrentPassword().equals(newPasswordDTO.getNewPassword())) {
+            throw new SamePasswordException("Новый и старый пароли совпадают");
+        }
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        User user = getUserFromAuthentication();
+        if (!encoder.matches(newPasswordDTO.getCurrentPassword(), user.getPassword())) {
+            log.debug("пароли не совпадают");
+            throw new WrongOldPasswordException("Некорректный текущий пароль");
+        }
+        String newPass = encoder.encode(newPasswordDTO.getNewPassword());
+        user.setPassword(newPass);
+        User out = userRepository.save(user);
+        log.info("The user with login = {} was updated ", out.getUsername());
+        return newPasswordDTO;
+    }
 }

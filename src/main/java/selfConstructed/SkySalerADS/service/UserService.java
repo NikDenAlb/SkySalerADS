@@ -1,11 +1,12 @@
 package selfConstructed.SkySalerADS.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
-import selfConstructed.SkySalerADS.exception.UserNotFoundException;
+import selfConstructed.SkySalerADS.exception.*;
 
 public interface UserService {
     UserDTO createUser(RegisterDTO registerDTO);
@@ -34,5 +35,11 @@ public interface UserService {
      */
     User getUser(String login);
 
-
+    /**
+     * Change current password of current {@link User}
+     * @return NewPasswordDTO with updated password
+     * @throws SamePasswordException    if current password == new password
+     * @throws WrongOldPasswordException if current password  != input password
+     */
+    NewPasswordDTO setPassword(NewPasswordDTO newPassword);
 }

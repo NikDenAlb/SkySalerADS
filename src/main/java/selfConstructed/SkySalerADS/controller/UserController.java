@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.service.UserService;
 
@@ -53,4 +54,34 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserMe(), HttpStatus.OK);
     }
 
+    /**
+     * Change password for user
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User's password was changed",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = NewPasswordDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden Action"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User Not Found"
+            )
+    })
+    @PostMapping("/set_password")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO newPassword) {
+        return new ResponseEntity<>(userService.setPassword(newPassword), HttpStatus.OK);
+    }
 }
