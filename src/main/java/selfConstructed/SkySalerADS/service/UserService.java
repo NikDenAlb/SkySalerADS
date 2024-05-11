@@ -1,6 +1,7 @@
 package selfConstructed.SkySalerADS.service;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
@@ -48,7 +49,16 @@ public interface UserService {
 
     /**
      * Update {@link User}
+     *
      * @throws NullNewDataException if one of fields is {@link Null}
      */
     UserDTO updateUser(UserDTO userDTO);
+
+    /**
+     * Update Avatar
+     *
+     * @return Updated UserDTO
+     * @throws BrokenImageUpdateException if update didn't work
+     */
+    UserDTO updateUserImage(MultipartFile file);
 }

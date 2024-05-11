@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -87,6 +88,7 @@ public class UserController {
 
     /**
      * Update user
+     *
      * @return Updated user
      */
     @ApiResponses({
@@ -115,5 +117,37 @@ public class UserController {
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(userService.updateUser(userDTO), HttpStatus.OK);
+    }
+
+    /**
+     * Update user Avatar
+     * @return Updated user
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User Avatar was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UserDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden Action"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User Not Found"
+            )
+    })
+    @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<UserDTO> updateUserImage(@RequestParam(value = "image") MultipartFile file) {
+        return new ResponseEntity<>(userService.updateUserImage(file), HttpStatus.OK);
     }
 }
