@@ -37,9 +37,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-
-    @GetMapping("/jopa")
-    public String jopa() {
-        return "Jopa";
-    }
 }
