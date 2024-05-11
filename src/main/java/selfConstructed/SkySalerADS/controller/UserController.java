@@ -84,4 +84,36 @@ public class UserController {
     public ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO newPassword) {
         return new ResponseEntity<>(userService.setPassword(newPassword), HttpStatus.OK);
     }
+
+    /**
+     * Update user
+     * @return Updated user
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UserDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Forbidden Action"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User Not Found"
+            )
+    })
+    @PatchMapping("/me")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(userService.updateUser(userDTO), HttpStatus.OK);
+    }
 }

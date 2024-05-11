@@ -8,6 +8,8 @@ import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.exception.*;
 
+import javax.validation.constraints.Null;
+
 public interface UserService {
     UserDTO createUser(RegisterDTO registerDTO);
 
@@ -37,9 +39,16 @@ public interface UserService {
 
     /**
      * Change current password of current {@link User}
+     *
      * @return NewPasswordDTO with updated password
-     * @throws SamePasswordException    if current password == new password
+     * @throws SamePasswordException     if current password == new password
      * @throws WrongOldPasswordException if current password  != input password
      */
     NewPasswordDTO setPassword(NewPasswordDTO newPassword);
+
+    /**
+     * Update {@link User}
+     * @throws NullNewDataException if one of fields is {@link Null}
+     */
+    UserDTO updateUser(UserDTO userDTO);
 }

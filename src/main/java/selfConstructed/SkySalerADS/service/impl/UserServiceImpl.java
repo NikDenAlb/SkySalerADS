@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
-import selfConstructed.SkySalerADS.exception.SamePasswordException;
-import selfConstructed.SkySalerADS.exception.UserAlreadyHereException;
-import selfConstructed.SkySalerADS.exception.UserNotFoundException;
-import selfConstructed.SkySalerADS.exception.WrongOldPasswordException;
+import selfConstructed.SkySalerADS.exception.*;
 import selfConstructed.SkySalerADS.mapper.UserEntity;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
@@ -90,5 +87,22 @@ public class UserServiceImpl implements UserService {
         User out = userRepository.save(user);
         log.info("The user with login = {} was updated ", out.getUsername());
         return newPasswordDTO;
+    }
+
+    @Transactional
+    @Override
+    public UserDTO updateUser(UserDTO userDTO) {
+        log.info("updating user with username = {}", userDTO.getUsername());
+        if (userDTO.getFirstName() == null || userDTO.getLastName() == null || userDTO.getPhone() == null) {
+            throw new NullNewDataException("Все поля должны быть заполнены");
+        }
+        User user = getUserFromAuthentication();
+
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setPhone(userDTO.getPhone());
+        User out = userRepository.save(user);
+        log.info("The userDTO with id = {} is updated ", out.getId());
+        return userMapper.toDTO(out);
     }
 }
