@@ -34,8 +34,8 @@ CREATE TABLE avatars
 (
     avatar_id      BIGINT PRIMARY KEY,
     file_path      VARCHAR(255),
-    file_size      BIGINT       NOT NULL,
-    media_type     VARCHAR(255) NOT NULL,
-    preview        oid          NOT NULL,
+    file_size      BIGINT,
+    media_type     VARCHAR(255),
+    preview        oid,
     user_id        BIGINT
     );
