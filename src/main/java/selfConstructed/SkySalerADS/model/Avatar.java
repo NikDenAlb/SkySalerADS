@@ -17,7 +17,7 @@ import java.util.Objects;
 @Table(name = "avatars")
 public class Avatar {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "avatar_id")
     private Long avatarId;
     @Column(name = "file_path")

@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentMapper.toModel(commentDTO);
         comment.setText(comment.getText());
         comment.setCreatedAt(comment.getCreatedAt());
-        comment.setAuthorImage(user.getImage());
+//        comment.setAuthorImage(user.getImage());
         comment.setAuthorFirstName(user.getFirstName());
         comment.setAuthor(user);
 
