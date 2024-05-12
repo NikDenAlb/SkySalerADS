@@ -1,11 +1,13 @@
 package selfConstructed.SkySalerADS.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,10 +23,9 @@ public class Ad {
     @JoinColumn(name = "author_user_id")
     private User author;
 
-    /**
-     * Link to ad image.
-     */
-    private String image;
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "ads",cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<AdImage> image;
 
     /**
      * Declaration primary key.
