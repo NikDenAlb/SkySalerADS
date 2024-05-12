@@ -1,6 +1,5 @@
 package selfConstructed.SkySalerADS.controller;
 
-package com.jts.controller;
 
 import java.io.IOException;
 
