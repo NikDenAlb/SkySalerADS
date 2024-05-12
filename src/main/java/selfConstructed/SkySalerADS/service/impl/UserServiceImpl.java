@@ -49,9 +49,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUserExists(String login) {
+    public boolean checkUserExists(String username) {
         log.info("Try to check whether the login is used or not");
-        userRepository.findUsersByUsernameIgnoreCase(login)
+        userRepository.findUsersByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return true;
     }
