@@ -3,7 +3,9 @@ package selfConstructed.SkySalerADS.service.impl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.AdsAllDTO;
 import selfConstructed.SkySalerADS.mapper.AdMapper;
+import selfConstructed.SkySalerADS.mapper.AdsAllMapper;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.AdRepository;
@@ -105,6 +107,12 @@ public class AdServiceImpl implements AdService {
         return ads.stream()
                 .map(adMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public AdsAllDTO getAllAdsDTO() {
+        List<AdDTO> ad = getAllAds();
+       return new AdsAllDTO(ad.size(),ad);
     }
 
     /**

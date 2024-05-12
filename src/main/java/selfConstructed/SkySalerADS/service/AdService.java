@@ -1,6 +1,7 @@
 package selfConstructed.SkySalerADS.service;
 
 import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.AdsAllDTO;
 
 import java.util.List;
 
@@ -52,6 +53,8 @@ public interface AdService {
      * @return the list of all advertisements as DTO objects
      */
     List<AdDTO> getAllAds();
+
+    AdsAllDTO getAllAdsDTO();
 
     /**
      * Retrieves advertisements created by the user with the specified identifier.
