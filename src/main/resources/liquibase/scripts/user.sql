@@ -28,7 +28,7 @@ CREATE TABLE users
     last_name  TEXT,
     phone      TEXT,
     role       TEXT,
-    image      TEXT
+    avatar      TEXT
 );
 CREATE TABLE avatars
 (

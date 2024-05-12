@@ -9,12 +9,12 @@ import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
 
 @Mapper(componentModel = "spring")
-public interface UserEntity {
+public interface UserRegisterDTOMapper {
 
     @Mapping(target = "image", expression = "java(getImageLink(user.getAvatar()))")
     UserDTO toDTO(User user);
 
-    User toModel(RegisterDTO registerDTO);
+/*+*/    User toModel(RegisterDTO registerDTO);
 
 
     @Transactional

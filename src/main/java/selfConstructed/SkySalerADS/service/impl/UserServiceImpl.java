@@ -14,7 +14,7 @@ import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.exception.*;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
-import selfConstructed.SkySalerADS.mapper.UserEntity;
+import selfConstructed.SkySalerADS.mapper.UserRegisterDTOMapper;
 import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.AvatarRepository;
@@ -28,16 +28,16 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final UserEntity userMapper;
+    private final UserRegisterDTOMapper userRegisterDTOMapper;
     private final AvatarRepository avatarRepository;
     private final ImageMapper imageMapper;
 
     @Override
     public UserDTO createUser(RegisterDTO registerDTO) {
         log.info("Trying to create and save new user");
-        User newUser = userRepository.save(userMapper.toModel(registerDTO));
+        User newUser = userRepository.save(userRegisterDTOMapper.toModel(registerDTO));
         log.info("The user with id = {} was saved ", newUser.getId());
-        return userMapper.toDTO(newUser);
+        return userRegisterDTOMapper.toDTO(newUser);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDTO getUserMe() {
-        return userMapper.toDTO(getUserFromAuthentication());
+        return userRegisterDTOMapper.toDTO(getUserFromAuthentication());
     }
 
     @Transactional
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(userDTO.getPhone());
         User out = userRepository.save(user);
         log.info("The userDTO with id = {} is updated ", out.getId());
-        return userMapper.toDTO(out);
+        return userRegisterDTOMapper.toDTO(out);
     }
     @Transactional
     @Override
@@ -131,6 +131,6 @@ public class UserServiceImpl implements UserService {
             log.warn("saving image is broken");
             throw new BrokenImageUpdateException("Не удалось сохранить картинку");
         }
-        return userMapper.toDTO(user);
+        return userRegisterDTOMapper.toDTO(user);
     }
 }
