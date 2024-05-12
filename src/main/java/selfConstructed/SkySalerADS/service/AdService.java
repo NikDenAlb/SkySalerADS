@@ -5,8 +5,6 @@ import selfConstructed.SkySalerADS.dto.AdDTO;
 import selfConstructed.SkySalerADS.dto.AdsAllDTO;
 import selfConstructed.SkySalerADS.dto.PreAdDTO;
 
-import java.util.List;
-
 /**
  * The {@code AdService} interface provides methods for managing advertisements.
  * Implementing classes should define the behavior for creating, updating, deleting,
