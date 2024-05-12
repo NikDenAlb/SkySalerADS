@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class LoginDTO {
     @Size(min = 4, max = 32, message = "The number must be at least 4 characters and no more than 32")
     @JsonProperty("username")
-    private String login;
+    private String username;
     @Size(min = 8, max = 16, message = "The number must be at least 8 characters and no more than 16")
     private String password;
 }

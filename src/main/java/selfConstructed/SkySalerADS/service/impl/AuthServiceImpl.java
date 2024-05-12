@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean register(RegisterDTO registerDTO, Role role) {
         log.info("user registration");
-        if (userService.checkUserForRegisterOk(registerDTO.getLogin())) {
+        if (userService.checkUserForRegisterOk(registerDTO.getUsername())) {
             registerDTO.setRole(role);
             registerDTO.setPassword(encoder.encode(registerDTO.getPassword()));
             userService.createUser(registerDTO);

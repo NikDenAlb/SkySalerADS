@@ -22,7 +22,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        if (authService.login(loginDTO.getLogin(), loginDTO.getPassword())) {
+        if (authService.login(loginDTO.getUsername(), loginDTO.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -36,10 +36,5 @@ public class AuthController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-    }
-
-    @GetMapping("/jopa")
-    public String jopa() {
-        return "Jopa";
     }
 }

@@ -20,7 +20,7 @@ public class User {
     /**
      * User login.
      */
-    private String login;
+    private String username;
 
     /**
      * Username.
@@ -48,8 +48,7 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    /**
-     * User image URL.
-     */
-    private String image;
+    @OneToOne
+    @JoinColumn(name = "image")
+    private Avatar avatar;
 }
