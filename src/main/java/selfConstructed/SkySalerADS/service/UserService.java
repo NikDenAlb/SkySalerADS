@@ -4,6 +4,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
+import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
@@ -51,7 +52,7 @@ public interface UserService {
      *
      * @throws NullNewDataException if one of fields is {@link Null}
      */
-    UserDTO updateUser(UserDTO userDTO);
+    UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO);
 
     /**
      * Update Avatar

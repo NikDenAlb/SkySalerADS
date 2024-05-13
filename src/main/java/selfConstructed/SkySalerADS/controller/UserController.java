@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
+import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,8 +117,8 @@ public class UserController {
     })
     @PatchMapping("/me")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
-        return new ResponseEntity<>(userService.updateUser(userDTO), HttpStatus.OK);
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+        return new ResponseEntity<>(userService.updateUser(updateUserDTO), HttpStatus.OK);
     }
 
     /**

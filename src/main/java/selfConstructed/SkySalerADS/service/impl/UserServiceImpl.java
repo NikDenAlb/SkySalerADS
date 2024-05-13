@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
+import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.exception.*;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
@@ -100,19 +101,18 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
-        log.info("updating user with username = {}", userDTO.getUsername());
-        if (userDTO.getFirstName() == null || userDTO.getLastName() == null || userDTO.getPhone() == null) {
+    public UpdateUserDTO updateUser(UpdateUserDTO updateUserDTO) {
+        User user = getUserFromAuthentication();
+        log.info("updating user with username = {}", user.getUsername());
+        if (updateUserDTO.getFirstName() == null || updateUserDTO.getLastName() == null || updateUserDTO.getPhone() == null) {
             throw new NullNewDataException("Все поля должны быть заполнены");
         }
-        User user = getUserFromAuthentication();
-
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setPhone(userDTO.getPhone());
-        User out = userRepository.save(user);
-        log.info("The userDTO with id = {} is updated ", out.getId());
-        return userRegisterDTOMapper.toDTO(out);
+        user.setFirstName(updateUserDTO.getFirstName());
+        user.setLastName(updateUserDTO.getLastName());
+        user.setPhone(updateUserDTO.getPhone());
+        userRepository.save(user);
+        log.info("The userDTO with id = {} is updated ", user.getId());
+        return updateUserDTO;
     }
     @Transactional
     @Override
