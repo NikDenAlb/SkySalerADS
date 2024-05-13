@@ -26,11 +26,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public boolean login(String login, String password) {
+    public boolean login(String username, String password) {
         log.info("try to log in to the user's system");
-        userService.checkUserExists(login);
+        userService.checkUserExists(username);
 
-        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(login, password));
+        Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return authentication.isAuthenticated();
     }

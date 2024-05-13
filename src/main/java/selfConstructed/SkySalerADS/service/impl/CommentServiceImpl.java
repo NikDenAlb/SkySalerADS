@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
      * @return the created comment as a DTO object
      */
     @Override
-    public CommentDTO createComment(CommentDTO commentDTO, Long adId, Long userId) {
+    public CommentDTO createComment(CommentDTO commentDTO, Long adId, Integer userId) {
         Ad ad = adRepository.findById(adId).orElseThrow(() -> new IllegalArgumentException("Ad not found"));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
 

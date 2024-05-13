@@ -18,7 +18,7 @@ public interface CommentService {
      * @param userId     the identifier of the user creating the comment
      * @return the created comment as a DTO object
      */
-    CommentDTO createComment(CommentDTO commentDTO, Long adId, Long userId);
+    CommentDTO createComment(CommentDTO commentDTO, Long adId, Integer userId);
 
     /**
      * Updates a comment.
