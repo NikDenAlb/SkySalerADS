@@ -18,9 +18,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
-     * User email.
+     * User login.
      */
-    private String email;
+    private String username;
 
     /**
      * Username.
@@ -45,11 +45,9 @@ public class User {
      * User role (for example, "USER").
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false)
     private Role role;
 
-    /**
-     * User image URL.
-     */
-    private String image;
+    @OneToOne
+    private Avatar avatar;
 }
