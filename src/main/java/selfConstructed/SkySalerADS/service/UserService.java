@@ -41,11 +41,10 @@ public interface UserService {
     /**
      * Change current password of current {@link User}
      *
-     * @return NewPasswordDTO with updated password
      * @throws SamePasswordException     if current password == new password
      * @throws WrongOldPasswordException if current password  != input password
      */
-    NewPasswordDTO setPassword(NewPasswordDTO newPassword);
+    void setPassword(NewPasswordDTO newPassword);
 
     /**
      * Update {@link User}

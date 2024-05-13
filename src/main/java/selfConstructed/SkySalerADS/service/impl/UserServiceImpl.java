@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public NewPasswordDTO setPassword(NewPasswordDTO newPasswordDTO) {
+    public void setPassword(NewPasswordDTO newPasswordDTO) {
         log.info("start setting new password");
         if (newPasswordDTO.getCurrentPassword().equals(newPasswordDTO.getNewPassword())) {
             throw new SamePasswordException("Новый и старый пароли совпадают");
@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(newPass);
         User out = userRepository.save(user);
         log.info("The user with login = {} was updated ", out.getUsername());
-        return newPasswordDTO;
     }
 
     @Transactional

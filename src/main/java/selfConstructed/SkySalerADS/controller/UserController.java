@@ -82,8 +82,9 @@ public class UserController {
     })
     @PostMapping("/set_password")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO newPassword) {
-        return new ResponseEntity<>(userService.setPassword(newPassword), HttpStatus.OK);
+    public ResponseEntity<?>  setPassword(@RequestBody NewPasswordDTO newPassword) {
+        userService.setPassword(newPassword);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
