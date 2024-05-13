@@ -11,6 +11,7 @@ import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.exception.*;
 
 import javax.validation.constraints.Null;
+import java.io.IOException;
 
 public interface UserService {
     UserDTO createUser(RegisterDTO registerDTO);
@@ -61,4 +62,6 @@ public interface UserService {
      * @throws BrokenImageUpdateException if update didn't work
      */
     UserDTO updateUserImage(MultipartFile file);
+
+    void updateAvatar(MultipartFile file) throws IOException;
 }

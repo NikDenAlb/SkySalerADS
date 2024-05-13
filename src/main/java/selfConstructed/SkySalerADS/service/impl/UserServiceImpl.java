@@ -19,10 +19,11 @@ import selfConstructed.SkySalerADS.mapper.UserMapper;
 import selfConstructed.SkySalerADS.mapper.UserRegisterDTOMapper;
 import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
-import selfConstructed.SkySalerADS.repository.AvatarRepository;
+import selfConstructed.SkySalerADS.repository.AvatarFileRepository;
 import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.service.UserService;
 
+import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -32,8 +33,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRegisterDTOMapper userRegisterDTOMapper;
     private final UserMapper userMapper;
-    private final AvatarRepository avatarRepository;
+    private final AvatarFileRepository avatarFileRepository;
     private final ImageMapper imageMapper;
+    private final AvatarFileRepositoryService avatarFileRepositoryService;
 
     @Override
     public UserDTO createUser(RegisterDTO registerDTO) {
@@ -114,24 +116,60 @@ public class UserServiceImpl implements UserService {
         log.info("The userDTO with id = {} is updated ", user.getId());
         return updateUserDTO;
     }
-    @Transactional
+
     @Override
     public UserDTO updateUserImage(MultipartFile file) {
-        log.info("Updating image");
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public void updateAvatar(MultipartFile avatar) throws IOException {
+        log.info("Trying to update image at the userDto");
         User user = getUserFromAuthentication();
-        if (avatarRepository.findAvatarByUserId(user).isPresent()) {
-            log.info("deleting old avatar");
-            avatarRepository.deleteAvatarByUserId(user);
+        log.info("The userDto is found, updating...");
+        if (avatarFileRepository.findAvatarByUserId(user).isPresent()) {
+            log.info("if avatar is found, delete it");
+            avatarFileRepository.deleteAvatarByUserId(user);
         }
         try {
-            Avatar newAvatar = imageMapper.toAvatar(file);
-            newAvatar.setUserId(user);
-            avatarRepository.save(newAvatar);
-            log.info("Avatar is updated");
+            Avatar inAvatar = imageMapper.toAvatar(avatar);
+            inAvatar.setUserId(user);
+
+            avatarFileRepository.save(inAvatar);
+            inAvatar.setPath(avatarFileRepositoryService.FILE_PATH+inAvatar.getAvatarUuid());
+            inAvatar.setUserId(user);
+            inAvatar = avatarFileRepository.save(inAvatar);
+            user.setAvatar(inAvatar);
+            userRepository.save(user);
+            avatar.transferTo(new File(inAvatar.getPath()));
+
+
+            log.info("Avatar was updated");
         } catch (IOException e) {
-            log.warn("saving image is broken");
-            throw new BrokenImageUpdateException("Не удалось сохранить картинку");
+            throw new BrokenImageUpdateException("unable to save image");
         }
-        return userRegisterDTOMapper.toDTO(user);
     }
+
+
+//    @Transactional
+//    @Override
+//    public UserDTO updateUserImage(MultipartFile file) {
+//        log.info("Updating image");
+//        User user = getUserFromAuthentication();
+//        if (avatarRepository.findAvatarByUserId(user).isPresent()) {
+//            log.info("deleting old avatar");
+//            avatarRepository.deleteAvatarByUserId(user);
+//        }
+//        try {
+//            Avatar newAvatar = imageMapper.toAvatar(file);
+//            newAvatar.setUserId(user);
+//            avatarRepository.save(newAvatar);
+//            log.info("Avatar is updated");
+//        } catch (IOException e) {
+//            log.warn("saving image is broken");
+//            throw new BrokenImageUpdateException("Не удалось сохранить картинку");
+//        }
+//        return userRegisterDTOMapper.toDTO(user);
+//    }
 }

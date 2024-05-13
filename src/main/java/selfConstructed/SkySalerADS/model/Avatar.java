@@ -1,52 +1,33 @@
 package selfConstructed.SkySalerADS.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.UUID;
 
-@Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Entity
+@Builder
 @Table(name = "avatars")
 public class Avatar {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avatar_id")
-    private Long avatarId;
-    @Column(name = "file_path")
-    private String filePath;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "avatar_uuid")
+    private UUID avatarUuid;
 
-    @Column(name = "file_size")
-    private Long fileSize;
+    private String name;
 
-    @Column(name = "media_type")
-    private String mediaType;
+    private String type;
+
+    private String path;
 
     @Lob
-    @Column(name = "preview")
-    private byte[] data;
+    private byte[] imageData;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User userId;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Avatar that = (Avatar) o;
-        return avatarId != null && Objects.equals(avatarId, that.avatarId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

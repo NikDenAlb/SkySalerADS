@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+import selfConstructed.SkySalerADS.exception.BrokenImageUpdateException;
 import selfConstructed.SkySalerADS.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -149,7 +152,12 @@ public class UserController {
     })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<UserDTO> updateUserImage(@RequestParam(value = "image") MultipartFile file) {
-        return new ResponseEntity<>(userService.updateUserImage(file), HttpStatus.OK);
+    public ResponseEntity<?> updateAvatar(@RequestParam(value = "image") MultipartFile file) {
+        try {
+            userService.updateAvatar(file);
+        } catch (IOException e) {
+            throw new BrokenImageUpdateException(e.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
