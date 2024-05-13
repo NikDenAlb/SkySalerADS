@@ -14,6 +14,7 @@ import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 import selfConstructed.SkySalerADS.exception.*;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
+import selfConstructed.SkySalerADS.mapper.UserMapper;
 import selfConstructed.SkySalerADS.mapper.UserRegisterDTOMapper;
 import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRegisterDTOMapper userRegisterDTOMapper;
+    private final UserMapper userMapper;
     private final AvatarRepository avatarRepository;
     private final ImageMapper imageMapper;
 
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public UserDTO getUserMe() {
-        return userRegisterDTOMapper.toDTO(getUserFromAuthentication());
+        return userMapper.toDTO(getUserFromAuthentication());
     }
 
     @Transactional
