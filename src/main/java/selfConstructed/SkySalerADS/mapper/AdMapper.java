@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.transaction.annotation.Transactional;
 import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.FullAdDTO;
 import selfConstructed.SkySalerADS.dto.PreAdDTO;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.AdImage;
@@ -34,4 +35,6 @@ public interface AdMapper {
         arrayLinks[0] = "/ads/image/" + adImages.get(0).getId();
         return arrayLinks;
     }
+
+    FullAdDTO toFullAdsDto(Ad ad);
 }

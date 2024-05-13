@@ -2,11 +2,11 @@ package selfConstructed.SkySalerADS.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import selfConstructed.SkySalerADS.dto.AdDTO;
-import selfConstructed.SkySalerADS.dto.AdsAllDTO;
-import selfConstructed.SkySalerADS.dto.PreAdDTO;
+import selfConstructed.SkySalerADS.dto.*;
 import selfConstructed.SkySalerADS.exception.AdsNotFoundException;
 import selfConstructed.SkySalerADS.exception.BrokenImageUpdateException;
 import selfConstructed.SkySalerADS.mapper.AdMapper;
@@ -72,80 +72,59 @@ public class AdServiceImpl implements AdService {
                 .orElseThrow(AdsNotFoundException::new);
     }
 
-//    /**
-//     * Creates a new advertisement.
-//     *
-//     * @param adDTO  the DTO object containing the information about the advertisement to be created
-//     * @param userId the identifier of the user creating the advertisement
-//     * @return the created advertisement as a DTO object
-//     */
-//    @Override
-//    public AdDTO createAd(AdDTO adDTO, Long userId) {
-//        Ad ad = adMapper.toModel(adDTO);
-//        User user = new User();
-//        user.setId(userId);
-//        ad.setAuthor(user);
-//        return adMapper.toDto(adRepository.save(ad));
-//    }
-//
-//
-//    /**
-//     * Updates an advertisement.
-//     *
-//     * @param adDTO the DTO object containing the information about the advertisement to be updated
-//     * @return the updated advertisement as a DTO object
-//     */
-//    @Override
-//    public AdDTO updateAd(AdDTO adDTO) {
-//        Ad existingAd = adRepository.findById(adDTO.getPk())
-//                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
-//
-//        Ad updatedAd = adMapper.toModel(adDTO);
-//        updatedAd.setTitle(existingAd.getTitle());
-//        updatedAd.setPrice(existingAd.getPrice());
-//        updatedAd.setImage(existingAd.getImage());
-//
-//        return adMapper.toDto(adRepository.save(updatedAd));
-//    }
-//
-//    /**
-//     * Deletes an advertisement by its identifier.
-//     *
-//     * @param adId   the identifier of the advertisement to delete
-//     * @param userId the identifier of the user attempting to delete the advertisement
-//     */
-//    @Override
-//    public void deleteAd(Long adId, Long userId) {
-//        Ad ad = adRepository.findById(adId)
-//                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
-//
-//        if (!ad.getAuthor().getId().equals(userId)) {
-//            throw new IllegalArgumentException("User is not authorized to delete this ad");
-//        }
-//
-//        adRepository.deleteById(adId);
-//    }
-//
-//    /**
-//     * Retrieves an advertisement by its identifier.
-//     *
-//     * @param adId the identifier of the advertisement
-//     * @return the advertisement as a DTO object
-//     */
-//    @Override
-//    public AdDTO getAdById(Long adId) {
-//        Ad ad = adRepository.findById(adId)
-//                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
-//        return adMapper.toDto(ad);
-//    }
-//
-    /**
-     * Retrieves all advertisements.
-     *
-     * @return the list of all advertisements as DTO objects
-     */
+    @Override
+    public AdDTO createAd(PreAdDTO preAdDto, MultipartFile files) {
+        return null;
+    }
 
-    private List<AdDTO> getAllAds() {
+    @Override
+    public AdDTO createAd(AdDTO adDTO, Long userId) {
+        return null;
+    }
+
+
+    @Override
+    public AdDTO createAd(AdDTO adDTO, Integer userId) {
+        Ad ad = adMapper.toModel(adDTO);
+        User user = new User();
+        user.setId(userId);
+        ad.setAuthor(user);
+        return adMapper.toDto(adRepository.save(ad));
+    }
+
+
+    @Override
+    public AdDTO updateAd(AdDTO adDTO) {
+        Ad existingAd = adRepository.findById(adDTO.getPk())
+                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
+
+        Ad updatedAd = adMapper.toModel(adDTO);
+        updatedAd.setTitle(existingAd.getTitle());
+        updatedAd.setPrice(existingAd.getPrice());
+        updatedAd.setImage(existingAd.getImage());
+
+        return adMapper.toDto(adRepository.save(updatedAd));
+    }
+
+
+    @Override
+    public void deleteAd(Long adId, Long userId) {
+        Ad ad = adRepository.findById(adId)
+                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
+
+        throw new IllegalArgumentException("User is not authorized to delete this ad");
+
+    }
+
+    @Override
+    public AdDTO getAdById(Long adId) {
+        Ad ad = adRepository.findById(adId)
+                .orElseThrow(() -> new IllegalArgumentException("Ad not found"));
+        return adMapper.toDto(ad);
+    }
+
+
+    public List<AdDTO> getAllAds() {
         List<Ad> ads = adRepository.findAll();
         return ads.stream()
                 .map(adMapper::toDto)
@@ -155,21 +134,54 @@ public class AdServiceImpl implements AdService {
     @Override
     public AdsAllDTO getAllAdsDTO() {
         List<AdDTO> ad = getAllAds();
-       return new AdsAllDTO(ad.size(),ad);
+        return new AdsAllDTO(ad.size(), ad);
     }
 
-//    /**
-//     * Retrieves advertisements created by the user with the specified identifier.
-//     *
-//     * @param userId the identifier of the user
-//     * @return the list of advertisements created by the specified user as DTO objects
-//     */
-//    @Override
-//    public List<AdDTO> getAdsByUserId(Long userId) {
-//        List<Ad> ads = adRepository.findByAuthorId(userId);
-//        return ads.stream()
-//                .map(adMapper::toDto)
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<AdDTO> getAdsByUserId(Long userId) {
+        return List.of();
+    }
+
+
+    @Transactional
+    @Override
+    public FullAdDTO getFullAds(long adsId) {
+        return adMapper.toFullAdsDto(findAd(adsId));
+    }
+
+    @Transactional
+    @Override
+    public AdDTO removeAds(long adsId) {
+        log.info("try to remove ads if it's found by id");
+        Ad adsForRemove = findAd(adsId);
+        User user = userService.getUserFromAuthentication();
+        checkThisIsYourAdsOrYouAdmin(adsForRemove, user);
+        adRepository.deleteById(adsId);
+        return adMapper.toDto(adsForRemove);
+    }
+
+    private void checkThisIsYourAdsOrYouAdmin(Ad ads, User user) {
+        if (!ads.getAuthor().equals(user) && !userService.isAdmin()) {
+            log.warn("Unavailable to update. It's not your ads! ads author = {}, login = {}", ads.getAuthor().getUsername(), user.getUsername());
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public boolean isAdmin() {
+        log.info("Try to check whether the user is an administrator or not");
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("admin_full_access"));
+    }
+
+    @Override
+    public AdDTO updateAdsImage(long adsId, MultipartFile file) {
+        return null;
+    }
+
+    @Override
+    public Object updateAd(long adsId, CreateAdDTO adDTO) {
+        return null;
+    }
 }
 

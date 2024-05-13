@@ -151,6 +151,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean isAdmin() {
+        return false;
+    }
+
 
 //    @Transactional
 //    @Override

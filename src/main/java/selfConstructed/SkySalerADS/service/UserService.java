@@ -64,4 +64,6 @@ public interface UserService {
     UserDTO updateUserImage(MultipartFile file);
 
     void updateAvatar(MultipartFile file) throws IOException;
+
+    boolean isAdmin();
 }
