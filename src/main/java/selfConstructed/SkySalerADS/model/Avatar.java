@@ -29,9 +29,9 @@ public class Avatar {
     private String path;
 
     @Lob
-    @Column(name = "preview")
+    @Column(name = "image")
     @Type(type = "org.hibernate.type.ImageType")
-    private byte[] data;
+    private byte[] image;
 
 
     @OneToOne

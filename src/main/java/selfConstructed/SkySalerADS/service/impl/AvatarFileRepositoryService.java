@@ -27,7 +27,7 @@ public class AvatarFileRepositoryService {
                 .name(avatar.getOriginalFilename())
                 .path(FILE_PATH)
                 .type(avatar.getContentType())
-                .data(avatar.getBytes())
+                .image(avatar.getBytes())
                 .build();
 
         inAvatar = avatarFileRepository.save(inAvatar);
