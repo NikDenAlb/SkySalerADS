@@ -58,9 +58,7 @@ public interface UserService {
 
     /**
      * Update Avatar
-     *
-     * @return Updated UserDTO
-     * @throws BrokenImageUpdateException if update didn't work
+       * @throws BrokenImageUpdateException if update didn't work
      */
     void updateUserAvatar(MultipartFile file);
 
