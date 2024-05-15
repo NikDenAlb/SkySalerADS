@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -29,6 +30,7 @@ public class Avatar {
 
     @Lob
     @Column(name = "preview")
+    @Type(type = "org.hibernate.type.ImageType")
     private byte[] data;
 
     @OneToOne
