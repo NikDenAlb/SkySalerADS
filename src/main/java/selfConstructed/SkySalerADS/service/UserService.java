@@ -5,11 +5,13 @@ import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.RegisterDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.exception.*;
 
 import javax.validation.constraints.Null;
+import java.util.Optional;
 
 public interface UserService {
     UserDTO createUser(RegisterDTO registerDTO);
@@ -60,5 +62,8 @@ public interface UserService {
      * @return Updated UserDTO
      * @throws BrokenImageUpdateException if update didn't work
      */
-    UserDTO updateUserImage(MultipartFile file);
+    UserDTO updateUserAvatar(MultipartFile file);
+
+    @Transactional
+    Optional<Avatar> getAvatarByUserId(User user);
 }

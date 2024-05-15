@@ -22,6 +22,7 @@ import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.service.UserService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -113,9 +114,10 @@ public class UserServiceImpl implements UserService {
         log.info("The userDTO with id = {} is updated ", out.getId());
         return userMapper.toDTO(out);
     }
+
     @Transactional
     @Override
-    public UserDTO updateUserImage(MultipartFile file) {
+    public UserDTO updateUserAvatar(MultipartFile file) {
         log.info("Updating image");
         User user = getUserFromAuthentication();
         if (avatarRepository.findAvatarByUserId(user).isPresent()) {
@@ -132,5 +134,10 @@ public class UserServiceImpl implements UserService {
             throw new BrokenImageUpdateException("Не удалось сохранить картинку");
         }
         return userMapper.toDTO(user);
+    }
+    @Transactional
+    @Override
+    public Optional<Avatar> getAvatarByUserId(User user) {
+        return avatarRepository.findAvatarByUserId(user);
     }
 }

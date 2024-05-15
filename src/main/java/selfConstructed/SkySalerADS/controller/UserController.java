@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +14,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -121,7 +125,6 @@ public class UserController {
 
     /**
      * Update user Avatar
-     * @return Updated user
      */
     @ApiResponses({
             @ApiResponse(
@@ -147,7 +150,21 @@ public class UserController {
     })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<UserDTO> updateUserImage(@RequestParam(value = "image") MultipartFile file) {
-        return new ResponseEntity<>(userService.updateUserImage(file), HttpStatus.OK);
+    public ResponseEntity<String> updateUserAvatar(@RequestParam(value = "image") MultipartFile file) {
+        userService.updateUserAvatar(file);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/avatar-from-db")
+    public ResponseEntity<byte[]> downloadAvatar() {
+        Optional<Avatar> avatarIn = userService.getAvatarByUserId(userService.getUserFromAuthentication());
+        if (!avatarIn.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Avatar avatar = avatarIn.get();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+        headers.setContentLength(avatar.getData().length);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
 }
