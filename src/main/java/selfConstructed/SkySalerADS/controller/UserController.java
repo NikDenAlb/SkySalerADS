@@ -13,12 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import selfConstructed.SkySalerADS.dto.NewPasswordDTO;
+import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
+
 import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -86,8 +89,9 @@ public class UserController {
     })
     @PostMapping("/set_password")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO newPassword) {
-        return new ResponseEntity<>(userService.setPassword(newPassword), HttpStatus.OK);
+    public ResponseEntity<?>  setPassword(@RequestBody NewPasswordDTO newPassword) {
+        userService.setPassword(newPassword);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -119,8 +123,8 @@ public class UserController {
     })
     @PatchMapping("/me")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO) {
-        return new ResponseEntity<>(userService.updateUser(userDTO), HttpStatus.OK);
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUserDTO) {
+        return new ResponseEntity<>(userService.updateUser(updateUserDTO), HttpStatus.OK);
     }
 
     /**
@@ -150,6 +154,7 @@ public class UserController {
     })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('user_basic_access')")
+
     public ResponseEntity<String> updateUserAvatar(@RequestParam(value = "image") MultipartFile file) {
         userService.updateUserAvatar(file);
         return ResponseEntity.ok().build();

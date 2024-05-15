@@ -8,30 +8,34 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Entity
+@Builder
 @Table(name = "avatars")
 public class Avatar {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "avatar_id")
     private Long avatarId;
 //    @Column(name = "file_path")
 //    private String filePath;
 
-    @Column(name = "file_size")
-    private Long fileSize;
+    private String name;
 
-    @Column(name = "media_type")
-    private String mediaType;
+    private String type;
+
+    private String path;
 
     @Lob
     @Column(name = "preview")
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] data;
+
 
     @OneToOne
     @JoinColumn(name = "user_id")

@@ -22,13 +22,15 @@ CREATE TABLE comment
 );
 CREATE TABLE users
 (
+
     id INT PRIMARY KEY,
+
     username TEXT,
     first_name TEXT,
     last_name  TEXT,
     phone      TEXT,
     role       TEXT,
-    image      TEXT
+    avatar      TEXT
 );
 CREATE TABLE avatars
 (

@@ -3,8 +3,7 @@ package selfConstructed.SkySalerADS.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.Pattern;
+import selfConstructed.SkySalerADS.model.Role;
 
 @Data
 @NoArgsConstructor
