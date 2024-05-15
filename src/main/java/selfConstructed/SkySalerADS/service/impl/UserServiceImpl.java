@@ -25,6 +25,7 @@ import selfConstructed.SkySalerADS.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -38,11 +39,11 @@ public class UserServiceImpl implements UserService {
     private final AvatarFileRepositoryService avatarFileRepositoryService;
 
     @Override
-    public UserDTO createUser(RegisterDTO registerDTO) {
+    public void createUser(RegisterDTO registerDTO) {
         log.info("Trying to create and save new user");
         User newUser = userRepository.save(userRegisterDTOMapper.toModel(registerDTO));
         log.info("The user with id = {} was saved ", newUser.getId());
-        return userRegisterDTOMapper.toDTO(newUser);
+
     }
 
     @Override
@@ -54,11 +55,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUserExists(String username) {
+    public void checkUserExists(String login) {
+
         log.info("Try to check whether the login is used or not");
         userRepository.findUsersByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        return true;
     }
 
     @Transactional
@@ -124,8 +125,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateAvatar(MultipartFile avatar) throws IOException {
-        log.info("Trying to update image at the userDto");
+    public void updateUserAvatar(MultipartFile file) {
+        log.info("Updating image");
         User user = getUserFromAuthentication();
         log.info("The userDto is found, updating...");
         if (avatarFileRepository.findAvatarByUserId(user).isPresent()) {
@@ -149,6 +150,12 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             throw new BrokenImageUpdateException("unable to save image");
         }
+    }
+
+    @Transactional
+    @Override
+    public Optional<Avatar> getAvatarByUserId(User user) {
+        return avatarRepository.findAvatarByUserId(user);
     }
 
 
