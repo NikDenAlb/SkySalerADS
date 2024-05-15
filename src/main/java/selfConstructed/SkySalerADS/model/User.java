@@ -16,7 +16,7 @@ public class User {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     /**
      * User login.
      */
@@ -45,10 +45,9 @@ public class User {
      * User role (for example, "USER").
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false)
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "image")
     private Avatar avatar;
 }
