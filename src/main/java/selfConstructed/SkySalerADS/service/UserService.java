@@ -64,4 +64,6 @@ public interface UserService {
 
     @Transactional
     Optional<Avatar> getAvatarByUserId(User user);
+
+    User getUser(Integer id);
 }

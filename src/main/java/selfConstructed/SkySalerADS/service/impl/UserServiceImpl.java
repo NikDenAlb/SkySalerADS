@@ -126,6 +126,7 @@ public class UserServiceImpl implements UserService {
             Avatar newAvatar = imageMapper.toAvatar(file);
             newAvatar.setUserId(user);
             avatarRepository.save(newAvatar);
+            user.setAvatar(newAvatar);
             log.info("Avatar is updated");
         } catch (IOException e) {
             log.warn("saving image is broken");
@@ -137,5 +138,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<Avatar> getAvatarByUserId(User user) {
         return avatarRepository.findAvatarByUserId(user);
+    }
+
+    @Transactional
+    @Override
+    public User getUser(Integer id) {
+        return userRepository.findUsersById(id)
+                .orElseThrow(() -> new UserNotFoundException("No User with id " + id + " in DB"));
     }
 }

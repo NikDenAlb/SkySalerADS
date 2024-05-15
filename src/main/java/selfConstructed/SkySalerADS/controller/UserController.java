@@ -155,10 +155,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/avatar-from-db")
-    public ResponseEntity<byte[]> downloadAvatar() {
-        Optional<Avatar> avatarIn = userService.getAvatarByUserId(userService.getUserFromAuthentication());
-        if (!avatarIn.isPresent()) {
+    @GetMapping(value = "/avatar/{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable String id) {
+        Optional<Avatar> avatarIn = userService.getAvatarByUserId(userService.getUser(Integer.parseInt(id)));
+         if (!avatarIn.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Avatar avatar = avatarIn.get();

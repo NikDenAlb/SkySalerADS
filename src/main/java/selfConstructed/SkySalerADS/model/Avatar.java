@@ -20,8 +20,8 @@ public class Avatar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "avatar_id")
     private Long avatarId;
-    @Column(name = "file_path")
-    private String filePath;
+//    @Column(name = "file_path")
+//    private String filePath;
 
     @Column(name = "file_size")
     private Long fileSize;
@@ -36,17 +36,4 @@ public class Avatar {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User userId;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Avatar that = (Avatar) o;
-        return avatarId != null && Objects.equals(avatarId, that.avatarId);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
