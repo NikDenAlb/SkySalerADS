@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import selfConstructed.SkySalerADS.model.Role;
 
+import javax.validation.constraints.Pattern;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

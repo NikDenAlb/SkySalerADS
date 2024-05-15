@@ -55,10 +55,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void checkUserExists(String login) {
+    public void checkUserExists(String userName) {
 
         log.info("Try to check whether the login is used or not");
-        userRepository.findUsersByUsernameIgnoreCase(username)
+        userRepository.findUsersByUsernameIgnoreCase(userName)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
@@ -118,11 +118,6 @@ public class UserServiceImpl implements UserService {
         return updateUserDTO;
     }
 
-    @Override
-    public UserDTO updateUserImage(MultipartFile file) {
-        return null;
-    }
-
     @Transactional
     @Override
     public void updateUserAvatar(MultipartFile file) {
@@ -137,7 +132,7 @@ public class UserServiceImpl implements UserService {
 
             Avatar newAvatar = imageMapper.toAvatar(file);
             newAvatar.setUserId(user);
-            avatarRepository.save(newAvatar);
+            avatarFileRepository.save(newAvatar);
             user.setAvatar(newAvatar);
             log.info("Avatar is updated");
 
@@ -149,7 +144,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<Avatar> getAvatarByUserId(User user) {
-        return avatarRepository.findAvatarByUserId(user);
+        return avatarFileRepository.findAvatarByUserId(user);
     }
 
     @Transactional

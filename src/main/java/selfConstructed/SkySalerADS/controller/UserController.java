@@ -169,7 +169,7 @@ public class UserController {
         }
         Avatar avatar = avatarIn.get();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+        headers.setContentType(MediaType.parseMediaType(avatar.getType()));
         headers.setContentLength(avatar.getData().length);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }

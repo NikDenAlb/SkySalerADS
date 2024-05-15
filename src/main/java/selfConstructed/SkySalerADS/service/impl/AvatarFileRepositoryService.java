@@ -27,14 +27,14 @@ public class AvatarFileRepositoryService {
                 .name(avatar.getOriginalFilename())
                 .path(FILE_PATH)
                 .type(avatar.getContentType())
-                .imageData(avatar.getBytes())
+                .data(avatar.getBytes())
                 .build();
 
         inAvatar = avatarFileRepository.save(inAvatar);
 
         avatar.transferTo(new File(filePath));
 
-        if (inAvatar.getAvatarUuid() != null) {
+        if (inAvatar.getAvatarId() != null) {
             log.info("Avatar uploaded successfully into database");
         }
     }
