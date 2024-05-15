@@ -134,19 +134,13 @@ public class UserServiceImpl implements UserService {
             avatarFileRepository.deleteAvatarByUserId(user);
         }
         try {
-            Avatar inAvatar = imageMapper.toAvatar(avatar);
-            inAvatar.setUserId(user);
 
-            avatarFileRepository.save(inAvatar);
-            inAvatar.setPath(avatarFileRepositoryService.FILE_PATH+inAvatar.getAvatarUuid());
-            inAvatar.setUserId(user);
-            inAvatar = avatarFileRepository.save(inAvatar);
-            user.setAvatar(inAvatar);
-            userRepository.save(user);
-            avatar.transferTo(new File(inAvatar.getPath()));
+            Avatar newAvatar = imageMapper.toAvatar(file);
+            newAvatar.setUserId(user);
+            avatarRepository.save(newAvatar);
+            user.setAvatar(newAvatar);
+            log.info("Avatar is updated");
 
-
-            log.info("Avatar was updated");
         } catch (IOException e) {
             throw new BrokenImageUpdateException("unable to save image");
         }
@@ -158,25 +152,11 @@ public class UserServiceImpl implements UserService {
         return avatarRepository.findAvatarByUserId(user);
     }
 
+    @Transactional
+    @Override
+    public User getUser(Integer id) {
+        return userRepository.findUsersById(id)
+                .orElseThrow(() -> new UserNotFoundException("No User with id " + id + " in DB"));
+    }
 
-//    @Transactional
-//    @Override
-//    public UserDTO updateUserImage(MultipartFile file) {
-//        log.info("Updating image");
-//        User user = getUserFromAuthentication();
-//        if (avatarRepository.findAvatarByUserId(user).isPresent()) {
-//            log.info("deleting old avatar");
-//            avatarRepository.deleteAvatarByUserId(user);
-//        }
-//        try {
-//            Avatar newAvatar = imageMapper.toAvatar(file);
-//            newAvatar.setUserId(user);
-//            avatarRepository.save(newAvatar);
-//            log.info("Avatar is updated");
-//        } catch (IOException e) {
-//            log.warn("saving image is broken");
-//            throw new BrokenImageUpdateException("Не удалось сохранить картинку");
-//        }
-//        return userRegisterDTOMapper.toDTO(user);
-//    }
 }

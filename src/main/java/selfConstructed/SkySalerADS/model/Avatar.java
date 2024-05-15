@@ -1,9 +1,13 @@
 package selfConstructed.SkySalerADS.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -14,9 +18,12 @@ import java.util.UUID;
 @Table(name = "avatars")
 public class Avatar {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "avatar_uuid")
-    private UUID avatarUuid;
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "avatar_id")
+    private Long avatarId;
+//    @Column(name = "file_path")
+//    private String filePath;
 
     private String name;
 
@@ -25,7 +32,10 @@ public class Avatar {
     private String path;
 
     @Lob
-    private byte[] imageData;
+    @Column(name = "preview")
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] data;
+
 
     @OneToOne
     @JoinColumn(name = "user_id")
