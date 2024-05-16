@@ -3,6 +3,7 @@ package selfConstructed.SkySalerADS.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.AdDTO;
 import selfConstructed.SkySalerADS.dto.AdsDTO;
@@ -40,6 +41,7 @@ public class AdServiceImpl implements AdService {
     private final ImageMapper imageMapper;
     private final UserService userService;
 
+    @Transactional
     @Override
     public AdsDTO getAllAds() {
         log.info("Getting all ads");
@@ -49,6 +51,7 @@ public class AdServiceImpl implements AdService {
         return new AdsDTO(preOut);
     }
 
+    @Transactional
     @Override
     public AdDTO addAd(CreateOrUpdateAdDTO inAdDTO, MultipartFile file) {
 
@@ -71,6 +74,7 @@ public class AdServiceImpl implements AdService {
         }
     }
 
+    @Transactional
     @Override
     public FullAdDTO getFullAdDTO(Integer id) {
         log.info("getting full ad");
@@ -82,6 +86,7 @@ public class AdServiceImpl implements AdService {
         return adMapper.toFullAdDTO(ad.get());
     }
 
+    @Transactional
     @Override
     public void removeAd(Integer id) {
         log.info("removing ad with id {}", id);
@@ -92,6 +97,7 @@ public class AdServiceImpl implements AdService {
         log.info("ad with ad.pk=={} removed", id);
     }
 
+    @Transactional
     @Override
     public AdDTO updateAd(Integer id, CreateOrUpdateAdDTO inAdDTO) {
         log.info("trying to update ads");
@@ -110,6 +116,7 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDTO(adRepository.save(ad));
     }
 
+    @Transactional
     @Override
     public AdsDTO getAdsMe() {
         log.info("try to get all ads of one user");
@@ -120,6 +127,25 @@ public class AdServiceImpl implements AdService {
                 .collect(Collectors.toList());
 
         return new AdsDTO(preOut);
+    }
+
+    @Transactional
+    @Override
+    public byte[] updateAdImage(Integer id, MultipartFile file) {
+        log.info("try to update ad image");
+        User user = userService.getUserFromAuthentication();
+        chekAdandUser(id, user);
+        Ad ad = adRepository.findById(id).get();
+        try {
+            AdImage adImage = imageMapper.toAdImage(file);
+            adImageRepository.deleteAdImageByAd(ad);
+            adImage.setAd(ad);
+            adImageRepository.save(adImage);
+        } catch (IOException e) {
+            log.warn("unable to save image");
+            throw new RuntimeException("unable to save image");
+        }
+        return ad.getAdImage().getImage();
     }
 
     private void chekAdandUser(Integer id, User user) {

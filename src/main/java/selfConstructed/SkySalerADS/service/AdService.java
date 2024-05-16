@@ -26,4 +26,6 @@ public interface AdService {
     AdDTO updateAd(Integer id, CreateOrUpdateAdDTO inAdDTO);
 
     AdsDTO getAdsMe();
+
+    byte[] updateAdImage(Integer id, MultipartFile file);
 }

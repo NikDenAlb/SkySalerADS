@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import selfConstructed.SkySalerADS.dto.AdsDTO;
 import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
 import selfConstructed.SkySalerADS.dto.FullAdDTO;
 import selfConstructed.SkySalerADS.service.AdService;
+
+import java.util.Objects;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -189,5 +192,36 @@ public class AdsController {
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<AdsDTO> getAdsMe() {
         return new ResponseEntity<>(adService.getAdsMe(), HttpStatus.OK);
+    }
+
+    /**
+     * Update adImage
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ads was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                            schema = @Schema(implementation = byte[].class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<byte[]> updateAdImage(@PathVariable Integer id,
+                                                @RequestParam(value = "image") MultipartFile file) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())));
+        headers.setContentLength(file.getSize());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adService.updateAdImage(id, file));
     }
 }
