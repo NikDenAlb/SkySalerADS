@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 
 @Entity
@@ -20,7 +18,7 @@ import java.util.Objects;
 public class AdImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ads_image_id")
+    @Column
     private Integer Id;
 
     private String type;

@@ -2,7 +2,7 @@ package selfConstructed.SkySalerADS.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import selfConstructed.SkySalerADS.dto.AdDTO;
-import selfConstructed.SkySalerADS.dto.AdsAllDTO;
+import selfConstructed.SkySalerADS.dto.AdsDTO;
 import selfConstructed.SkySalerADS.dto.PreAdDTO;
 
 /**
@@ -59,7 +59,7 @@ public interface AdService {
 //     */
 //    List<AdDTO> getAllAds();
 
-    AdsAllDTO getAllAdsDTO();
+    AdsDTO getAllAdsDTO();
 
 //    /**
 //     * Retrieves advertisements created by the user with the specified identifier.

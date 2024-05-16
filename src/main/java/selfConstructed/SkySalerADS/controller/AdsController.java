@@ -1,24 +1,15 @@
-//package selfConstructed.SkySalerADS.controller;
-//
-//import io.swagger.v3.oas.annotations.media.Content;
-//import io.swagger.v3.oas.annotations.media.Schema;
-//import io.swagger.v3.oas.annotations.responses.ApiResponse;
-//import io.swagger.v3.oas.annotations.responses.ApiResponses;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//import selfConstructed.SkySalerADS.dto.AdsAllDTO;
-//import selfConstructed.SkySalerADS.service.AdService;
-//
-//@Slf4j
-//@CrossOrigin(value = "http://localhost:3000")
-//@RestController
-//@RequestMapping("/ads")
-//@RequiredArgsConstructor
-//public class AdsController {
+package selfConstructed.SkySalerADS.controller;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+@Slf4j
+@CrossOrigin(value = "http://localhost:3000")
+@RestController
+@RequestMapping("/ads")
+@RequiredArgsConstructor
+public class AdsController {
 //    private final AdService adService;
 //
 //    /**
@@ -72,4 +63,4 @@
 //                                             @RequestParam(value = "image") MultipartFile[] files) {
 //        return new ResponseEntity<>(adService.createAd(preAdDTO, files), HttpStatus.CREATED);
 //    }
-//}
+}

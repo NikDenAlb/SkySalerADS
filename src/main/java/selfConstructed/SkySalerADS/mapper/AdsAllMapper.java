@@ -1,10 +1,10 @@
 package selfConstructed.SkySalerADS.mapper;
 
-import selfConstructed.SkySalerADS.dto.AdsAllDTO;
+import selfConstructed.SkySalerADS.dto.AdsDTO;
 import selfConstructed.SkySalerADS.model.Ad;
 
 public interface AdsAllMapper {
-    AdsAllDTO toDto(Ad ad);
+    AdsDTO toDto(Ad ad);
 
-    Ad toModel(AdsAllDTO adsAllDTO);
+    Ad toModel(AdsDTO adsDTO);
 }

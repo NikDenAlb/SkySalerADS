@@ -15,6 +15,14 @@ public interface ImageMapper {
     @Mapping(target = "image", expression = "java(file.getBytes())")
     Avatar toAvatar(MultipartFile file) throws IOException;
 
+    @Mapping(target = "type", expression = "java(file.getContentType())")
+    @Mapping(target = "image", expression = "java(file.getBytes())")
+    AdImage toAdImage(MultipartFile file) throws IOException;
+
+
+
+
+
     //   @Mapping(target = "image", expression = "java(getImageLink(user.getAvatar()))")
 //    @Mapping(target = "id", ignore = true)
 //    @Mapping(target = "filesize", source = "file.size")
