@@ -24,4 +24,6 @@ public interface AdService {
     void removeAd(Integer id);
 
     AdDTO updateAd(Integer id, CreateOrUpdateAdDTO inAdDTO);
+
+    AdsDTO getAdsMe();
 }

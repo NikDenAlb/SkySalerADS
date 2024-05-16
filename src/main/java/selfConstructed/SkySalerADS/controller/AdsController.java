@@ -164,7 +164,30 @@ public class AdsController {
     @PatchMapping("{id}")
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
-                                            @RequestBody CreateOrUpdateAdDTO inAdDTO) {
+                                           @RequestBody CreateOrUpdateAdDTO inAdDTO) {
         return new ResponseEntity<>(adService.updateAd(id, inAdDTO), HttpStatus.OK);
+    }
+
+    /**
+     *
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Got my ads",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdsDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+    })
+    @GetMapping("/me")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdsDTO> getAdsMe() {
+        return new ResponseEntity<>(adService.getAdsMe(), HttpStatus.OK);
     }
 }

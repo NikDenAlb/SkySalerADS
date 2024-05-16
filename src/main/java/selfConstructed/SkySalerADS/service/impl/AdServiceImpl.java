@@ -110,6 +110,18 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDTO(adRepository.save(ad));
     }
 
+    @Override
+    public AdsDTO getAdsMe() {
+        log.info("try to get all ads of one user");
+        User user = userService.getUserFromAuthentication();
+
+        List<AdDTO> preOut = adRepository.findAllByUser(user).stream()
+                .map(adMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return new AdsDTO(preOut);
+    }
+
     private void chekAdandUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {
