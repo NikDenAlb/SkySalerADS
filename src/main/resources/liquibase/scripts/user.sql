@@ -22,9 +22,7 @@ CREATE TABLE comment
 );
 CREATE TABLE users
 (
-
     id         INT PRIMARY KEY,
-
     username   TEXT,
     first_name TEXT,
     last_name  TEXT,
@@ -34,9 +32,8 @@ CREATE TABLE users
 );
 CREATE TABLE avatars
 (
-    id         INT PRIMARY KEY,
-    file_size  INT,
-    media_type VARCHAR(255),
-    preview    TEXT,
-    user_id    INT
+    id        INT PRIMARY KEY,
+    type      VARCHAR(255),
+    image     TEXT,
+    user_link INT
 );

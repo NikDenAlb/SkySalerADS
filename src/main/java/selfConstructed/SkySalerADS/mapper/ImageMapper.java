@@ -11,11 +11,10 @@ import java.io.IOException;
 @Mapper(componentModel = "spring")
 public interface ImageMapper {
 
-
-    @Mapping(target = "name", expression = "java(file.getName())")
     @Mapping(target = "type", expression = "java(file.getContentType())")
     @Mapping(target = "image", expression = "java(file.getBytes())")
     Avatar toAvatar(MultipartFile file) throws IOException;
+
     //   @Mapping(target = "image", expression = "java(getImageLink(user.getAvatar()))")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "filesize", source = "file.size")

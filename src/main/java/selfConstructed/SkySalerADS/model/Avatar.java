@@ -12,17 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "avatars")
+@Table
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
-    private String name;
-
     private String type;
-
-    private String path;
 
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
