@@ -1,9 +1,6 @@
 package selfConstructed.SkySalerADS.service;
 
-import org.springframework.web.multipart.MultipartFile;
-import selfConstructed.SkySalerADS.dto.AdDTO;
 import selfConstructed.SkySalerADS.dto.AdsDTO;
-import selfConstructed.SkySalerADS.dto.PreAdDTO;
 
 /**
  * The {@code AdService} interface provides methods for managing advertisements.
@@ -14,10 +11,7 @@ import selfConstructed.SkySalerADS.dto.PreAdDTO;
  */
 public interface AdService {
 
-    /**
-     * Create adDTO from PreAdDTO
-     */
-    AdDTO createAd(PreAdDTO preAdDto, MultipartFile[] files);
+    AdsDTO getAllAds();
 
 //    /**
 //     * Creates a new advertisement.
@@ -59,7 +53,9 @@ public interface AdService {
 //     */
 //    List<AdDTO> getAllAds();
 
-    AdsDTO getAllAdsDTO();
+
+
+
 
 //    /**
 //     * Retrieves advertisements created by the user with the specified identifier.

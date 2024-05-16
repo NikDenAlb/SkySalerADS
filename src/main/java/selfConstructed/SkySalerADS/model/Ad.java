@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -19,9 +18,8 @@ public class Ad {
     @ManyToOne
     private User user;
 
-    @Lob
-    @Type(type = "org.hibernate.type.ImageType")
-    private byte[] image;
+    @OneToOne
+    private AdImage adImage;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

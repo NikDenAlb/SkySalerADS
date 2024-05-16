@@ -1,40 +1,40 @@
-//package selfConstructed.SkySalerADS.service.impl;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.multipart.MultipartFile;
-//import selfConstructed.SkySalerADS.dto.AdDTO;
-//import selfConstructed.SkySalerADS.dto.AdsAllDTO;
-//import selfConstructed.SkySalerADS.dto.PreAdDTO;
-//import selfConstructed.SkySalerADS.exception.AdsNotFoundException;
-//import selfConstructed.SkySalerADS.exception.BrokenImageUpdateException;
-//import selfConstructed.SkySalerADS.mapper.AdMapper;
-//import selfConstructed.SkySalerADS.mapper.ImageMapper;
-//import selfConstructed.SkySalerADS.model.Ad;
-//import selfConstructed.SkySalerADS.model.AdImage;
-//import selfConstructed.SkySalerADS.model.User;
-//import selfConstructed.SkySalerADS.repository.AdImageRepository;
-//import selfConstructed.SkySalerADS.repository.AdRepository;
-//import selfConstructed.SkySalerADS.service.AdService;
-//import selfConstructed.SkySalerADS.service.UserService;
-//
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-///**
-// * The {@code AdServiceImpl} class implements the {@link AdService} interface,
-// * providing methods for managing advertisements.
-// *
-// * @author shinkevich oleg
-// */
-//@Slf4j
-//@Service
-//@AllArgsConstructor
-//public class AdServiceImpl implements AdService {
-//
+package selfConstructed.SkySalerADS.service.impl;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.AdsDTO;
+import selfConstructed.SkySalerADS.mapper.AdMapper;
+import selfConstructed.SkySalerADS.repository.AdRepository;
+import selfConstructed.SkySalerADS.service.AdService;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * The {@code AdServiceImpl} class implements the {@link AdService} interface,
+ * providing methods for managing advertisements.
+ *
+ * @author shinkevich oleg
+ */
+@Slf4j
+@Service
+@AllArgsConstructor
+public class AdServiceImpl implements AdService {
+
+    private final AdRepository adRepository;
+    private final AdMapper adMapper;
+
+    @Override
+    public AdsDTO getAllAds() {
+        log.info("Getting all ads");
+        List<AdDTO> preOut = (adRepository.findAll()).stream()
+                .map(adMapper::toDTO)
+                .collect(Collectors.toList());
+        return new AdsDTO(preOut);
+    }
+
 //    private final UserService userService;
 //    private AdRepository adRepository;
 //    private final ImageMapper imageMapper;
@@ -171,5 +171,4 @@
 //                .map(adMapper::toDto)
 //                .collect(Collectors.toList());
 //    }
-//}
-
+}

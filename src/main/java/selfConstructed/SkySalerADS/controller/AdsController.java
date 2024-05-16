@@ -1,8 +1,17 @@
 package selfConstructed.SkySalerADS.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import selfConstructed.SkySalerADS.dto.AdsDTO;
+import selfConstructed.SkySalerADS.service.AdService;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -10,7 +19,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdsController {
-//    private final AdService adService;
+    private final AdService adService;
+
+    /**
+     *All ads from DB
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Got all ads",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdsDTO.class)
+                    )
+            )
+    })
+    @GetMapping
+    public ResponseEntity<AdsDTO> getAllAds() {
+        return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
+    }
+
+
 //
 //    /**
 //     * get All ads
