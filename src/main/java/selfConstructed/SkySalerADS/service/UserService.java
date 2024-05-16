@@ -70,4 +70,5 @@ public interface UserService {
 
     User getUser(Integer id);
 
+    boolean isAdmin();
 }

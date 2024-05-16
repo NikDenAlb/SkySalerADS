@@ -107,4 +107,32 @@ public class AdsController {
     public ResponseEntity<FullAdDTO> getFullAds(@PathVariable Integer id) {
         return new ResponseEntity<>(adService.getFullAdDTO(id), HttpStatus.OK);
     }
+
+    /**
+     * Delete ad by Ad.pk
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Ads was deleted"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<?> removeAds(@PathVariable Integer id) {
+        adService.removeAd(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

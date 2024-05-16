@@ -81,4 +81,25 @@ public class AdServiceImpl implements AdService {
         }
         return adMapper.toFullAdDTO(ad.get());
     }
+
+    @Override
+    public void removeAd(Integer id) {
+        log.info("removing ad with id {}", id);
+        Optional<Ad> optionalAd = adRepository.findById(id);
+        if (!optionalAd.isPresent()) {
+            log.warn("ad not found");
+            throw new RuntimeException("ad not found");
+        }
+        Ad ad = optionalAd.get();
+
+
+        User user = userService.getUserFromAuthentication();
+        if (!ad.getUser().equals(user) && !userService.isAdmin()) {
+            log.warn("Request denied. ad's author = {}, but user = {}", ad.getUser().getUsername(), user.getUsername());
+            throw new RuntimeException();
+        }
+
+        adRepository.deleteById(id);
+        log.info("ad with ad.pk=={} removed", id);
+    }
 }

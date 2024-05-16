@@ -20,4 +20,6 @@ public interface AdService {
     AdDTO addAd(CreateOrUpdateAdDTO inAdDTO, MultipartFile file);
 
     FullAdDTO getFullAdDTO(Integer id);
+
+    void removeAd(Integer id);
 }

@@ -151,4 +151,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUsersById(id)
                 .orElseThrow(() -> new UserNotFoundException("No User with id " + id + " in DB"));
     }
+
+    @Override
+    public boolean isAdmin() {
+        log.info("Checking admin rights");
+        if (SecurityContextHolder
+                .getContext().getAuthentication().getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("admin_full_access"))) {
+            log.info("Admin rights confirmed");
+            return true;
+        }
+        log.info("Admin rights denied");
+        return false;
+    }
 }
