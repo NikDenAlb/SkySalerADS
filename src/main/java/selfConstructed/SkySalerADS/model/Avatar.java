@@ -15,12 +15,9 @@ import javax.persistence.*;
 @Table(name = "avatars")
 public class Avatar {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avatar_id")
-    private Long avatarId;
-//    @Column(name = "file_path")
-//    private String filePath;
+    @Column(name = "avatar")
+    private Integer Id;
 
     private String name;
 
@@ -33,8 +30,6 @@ public class Avatar {
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] image;
 
-
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 }

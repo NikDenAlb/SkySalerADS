@@ -19,7 +19,6 @@ import selfConstructed.SkySalerADS.service.AdService;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdsController {
-//
     private final AdService adService;
 
     /**

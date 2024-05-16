@@ -19,11 +19,10 @@ import selfConstructed.SkySalerADS.mapper.UserMapper;
 import selfConstructed.SkySalerADS.mapper.UserRegisterDTOMapper;
 import selfConstructed.SkySalerADS.model.Avatar;
 import selfConstructed.SkySalerADS.model.User;
-import selfConstructed.SkySalerADS.repository.AvatarFileRepository;
+import selfConstructed.SkySalerADS.repository.AvatarRepository;
 import selfConstructed.SkySalerADS.repository.UserRepository;
 import selfConstructed.SkySalerADS.service.UserService;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -34,9 +33,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRegisterDTOMapper userRegisterDTOMapper;
     private final UserMapper userMapper;
-    private final AvatarFileRepository avatarFileRepository;
+    private final AvatarRepository avatarRepository;
     private final ImageMapper imageMapper;
-    private final AvatarFileRepositoryService avatarFileRepositoryService;
 
     @Override
     public void createUser(RegisterDTO registerDTO) {
@@ -124,15 +122,15 @@ public class UserServiceImpl implements UserService {
         log.info("Updating image");
         User user = getUserFromAuthentication();
         log.info("The userDto is found, updating...");
-        if (avatarFileRepository.findAvatarByUserId(user).isPresent()) {
+        if (avatarRepository.findAvatarByUser(user).isPresent()) {
             log.info("if avatar is found, delete it");
-            avatarFileRepository.deleteAvatarByUserId(user);
+            avatarRepository.deleteAvatarByUser(user);
         }
         try {
 
             Avatar newAvatar = imageMapper.toAvatar(file);
-            newAvatar.setUserId(user);
-            avatarFileRepository.save(newAvatar);
+            newAvatar.setUser(user);
+            avatarRepository.save(newAvatar);
             user.setAvatar(newAvatar);
             log.info("Avatar is updated");
 
@@ -144,7 +142,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public Optional<Avatar> getAvatarByUserId(User user) {
-        return avatarFileRepository.findAvatarByUserId(user);
+        return avatarRepository.findAvatarByUser(user);
     }
 
     @Transactional
@@ -153,5 +151,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUsersById(id)
                 .orElseThrow(() -> new UserNotFoundException("No User with id " + id + " in DB"));
     }
-
 }

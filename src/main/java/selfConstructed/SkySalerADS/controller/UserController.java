@@ -17,11 +17,11 @@ import selfConstructed.SkySalerADS.dto.UpdateUserDTO;
 import selfConstructed.SkySalerADS.dto.UserDTO;
 
 import selfConstructed.SkySalerADS.model.Avatar;
+import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
-
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -33,10 +33,7 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * Get users
-     * Use method of service {@link UserService#getUserMe()}
-     *
-     * @return Founded user
+     * Get current user
      */
     @ApiResponses({
             @ApiResponse(
@@ -63,7 +60,9 @@ public class UserController {
     }
 
     /**
-     * Change password for user
+     * set new password for user.
+     * oldPassword==curPassword
+     * newPassword!=curPassword
      */
     @ApiResponses({
             @ApiResponse(
@@ -89,15 +88,15 @@ public class UserController {
     })
     @PostMapping("/set_password")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<?>  setPassword(@RequestBody NewPasswordDTO newPassword) {
+    public ResponseEntity<?> setPassword(@RequestBody NewPasswordDTO newPassword) {
         userService.setPassword(newPassword);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
-     * Update user
+     * Update {@link User} with new
      *
-     * @return Updated user
+     * @fields firstName, lastname, phone
      */
     @ApiResponses({
             @ApiResponse(
@@ -128,7 +127,8 @@ public class UserController {
     }
 
     /**
-     * Update user Avatar
+     * Update {@link User} with new
+     * {@link Avatar}
      */
     @ApiResponses({
             @ApiResponse(
@@ -154,17 +154,19 @@ public class UserController {
     })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('user_basic_access')")
-
     public ResponseEntity<String> updateUserAvatar(@RequestParam(value = "image") MultipartFile file) {
         userService.updateUserAvatar(file);
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Get {@link Avatar} of {@link User} by user.id
+     */
     @GetMapping(value = "/avatar/{id}")
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable String id) {
         Optional<Avatar> avatarIn = userService.getAvatarByUserId(userService.getUser(Integer.parseInt(id)));
-         if (!avatarIn.isPresent()) {
+        if (!avatarIn.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Avatar avatar = avatarIn.get();
