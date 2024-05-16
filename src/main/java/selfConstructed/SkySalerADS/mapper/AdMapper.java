@@ -4,8 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.transaction.annotation.Transactional;
 import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.AdImage;
+import selfConstructed.SkySalerADS.model.User;
 
 @Mapper(componentModel = "spring")
 public interface AdMapper {
@@ -22,20 +24,7 @@ public interface AdMapper {
         return "/users/image/" + adImage.getId();
     }
 
-//    @Mapping(target = "pk", source = "pk")
-//    @Mapping(target = "author.id", source = "author")
-//    @Mapping(target = "image", ignore = true)
-//    Ad toModel(AdDTO adDTO);
-
-
-//    @Mapping(target = "price", source = "preAdDto.price")
-//    @Mapping(target = "title", source = "preAdDto.title")
-//    Ad toModel(PreAdDTO preAdDto, User user);
-//
-//    @Transactional
-//    default String[] getImageLink(List<AdImage> adImages) {
-//        String[] arrayLinks = new String[1];
-//        arrayLinks[0] = "/ads/image/" + adImages.get(0).getId();
-//        return arrayLinks;
-//    }
+    @Mapping(target = "adImage", ignore = true)
+    @Mapping(target = "pk", ignore = true)
+    Ad toModel(CreateOrUpdateAdDTO preAdDTO, User user);
 }

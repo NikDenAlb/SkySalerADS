@@ -9,8 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import selfConstructed.SkySalerADS.dto.AdDTO;
 import selfConstructed.SkySalerADS.dto.AdsDTO;
+import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
 import selfConstructed.SkySalerADS.service.AdService;
 
 @Slf4j
@@ -22,7 +26,7 @@ public class AdsController {
     private final AdService adService;
 
     /**
-     *All ads from DB
+     * All ads from DB
      */
     @ApiResponses({
             @ApiResponse(
@@ -37,6 +41,39 @@ public class AdsController {
     @GetMapping
     public ResponseEntity<AdsDTO> getAllAds() {
         return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
+    }
+
+    /**
+     * Create new Ad
+     */
+    @ApiResponses({
+
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Created new Ads",
+                    content = {@Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdDTO.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdDTO> addAd(@RequestPart(value = "properties") CreateOrUpdateAdDTO inAdDTO,
+                                       @RequestParam(value = "file") MultipartFile file) {
+        return new ResponseEntity<>(adService.addAd(inAdDTO, file), HttpStatus.CREATED);
     }
 
 
