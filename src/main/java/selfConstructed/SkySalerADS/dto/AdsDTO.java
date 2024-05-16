@@ -5,15 +5,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AdsAllDTO {
+public class AdsDTO {
     private Integer count;
     private List<AdDTO> results;
 
-    public AdsAllDTO(Integer count, List<AdDTO> results) {
-        this.count = count;
+    public AdsDTO(List<AdDTO> results) {
         this.results = results;
-    }
-
-    public AdsAllDTO(int size, List<AdDTO> ad) {
+        this.count = results.size();
     }
 }

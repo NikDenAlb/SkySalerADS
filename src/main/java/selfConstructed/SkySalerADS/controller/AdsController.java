@@ -6,12 +6,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import selfConstructed.SkySalerADS.dto.AdsAllDTO;
+import org.springframework.web.multipart.MultipartFile;
+import selfConstructed.SkySalerADS.dto.AdDTO;
+import selfConstructed.SkySalerADS.dto.AdsDTO;
+import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
+import selfConstructed.SkySalerADS.dto.FullAdDTO;
 import selfConstructed.SkySalerADS.service.AdService;
+
+import java.util.Objects;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -19,11 +27,10 @@ import selfConstructed.SkySalerADS.service.AdService;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdsController {
-//
     private final AdService adService;
 
     /**
-     * get All ads
+     * All ads from DB
      */
     @ApiResponses({
             @ApiResponse(
@@ -31,46 +38,190 @@ public class AdsController {
                     description = "Got all ads",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = AdsAllDTO.class)
+                            schema = @Schema(implementation = AdsDTO.class)
                     )
             )
     })
     @GetMapping
-    public ResponseEntity<AdsAllDTO> getAllAds() {
-        return new ResponseEntity<>(adService.getAllAdsDTO(), HttpStatus.OK);
+    public ResponseEntity<AdsDTO> getAllAds() {
+        return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
     }
-//
-//    /**
-//     * Create new ads
-//     */
-//    @ApiResponses({
-//
-//            @ApiResponse(
-//                    responseCode = "201",
-//                    description = "Created new Ads",
-//                    content = {@Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = AdDTO.class)
-//                    )}
-//            ),
-//            @ApiResponse(
-//                    responseCode = "401",
-//                    description = "Unauthorized User"
-//            ),
-//            @ApiResponse(
-//                    responseCode = "403",
-//                    description = "Action Forbidden"
-//            ),
-//            @ApiResponse(
-//                    responseCode = "404",
-//                    description = "Ads Not Found"
-//            )
-//    })
-//
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @PreAuthorize("hasAuthority('user_basic_access')")
-//    public ResponseEntity<AdDTO> createAdDTO(@RequestPart(value = "properties") PreAdDTO preAdDTO,
-//                                             @RequestParam(value = "image") MultipartFile[] files) {
-//        return new ResponseEntity<>(adService.createAd(preAdDTO, files), HttpStatus.CREATED);
-//    }
+
+    /**
+     * Create new Ad
+     */
+    @ApiResponses({
+
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Created new Ads",
+                    content = {@Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdDTO.class)
+                    )}
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdDTO> addAd(@RequestPart(value = "properties") CreateOrUpdateAdDTO inAdDTO,
+                                       @RequestParam(value = "file") MultipartFile file) {
+        return new ResponseEntity<>(adService.addAd(inAdDTO, file), HttpStatus.CREATED);
+    }
+
+    /**
+     * Ad info from Ad.pk
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ads was gotten",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = FullAdDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<FullAdDTO> getFullAds(@PathVariable Integer id) {
+        return new ResponseEntity<>(adService.getFullAdDTO(id), HttpStatus.OK);
+    }
+
+    /**
+     * Delete ad by Ad.pk
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Ads was deleted"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<?> removeAds(@PathVariable Integer id) {
+        adService.removeAd(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Update ad by ad.pk
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ads was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PatchMapping("{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
+                                           @RequestBody CreateOrUpdateAdDTO inAdDTO) {
+        return new ResponseEntity<>(adService.updateAd(id, inAdDTO), HttpStatus.OK);
+    }
+
+    /**
+     *
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Got my ads",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdsDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+    })
+    @GetMapping("/me")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdsDTO> getAdsMe() {
+        return new ResponseEntity<>(adService.getAdsMe(), HttpStatus.OK);
+    }
+
+    /**
+     * Update adImage
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ads was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                            schema = @Schema(implementation = byte[].class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<byte[]> updateAdImage(@PathVariable Integer id,
+                                                @RequestParam(value = "image") MultipartFile file) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())));
+        headers.setContentLength(file.getSize());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adService.updateAdImage(id, file));
+    }
 }

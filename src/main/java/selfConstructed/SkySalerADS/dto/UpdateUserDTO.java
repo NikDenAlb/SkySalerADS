@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * For user Update
+ * @field firstName
+ * @field lastName
+ * @field phone
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

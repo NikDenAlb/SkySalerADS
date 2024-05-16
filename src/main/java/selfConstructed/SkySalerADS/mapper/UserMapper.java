@@ -13,14 +13,11 @@ public interface UserMapper {
     @Mapping(target = "image", expression = "java(getImageLink(user.getAvatar()))")
     UserDTO toDTO(User user);
 
-
     @Transactional
     default String getImageLink(Avatar avatar) {
         if (avatar == null) {
             return null;
         }
-        return "/users/image/" + avatar.getAvatarId();
+        return "/users/image/" + avatar.getId();
     }
-
-
 }
