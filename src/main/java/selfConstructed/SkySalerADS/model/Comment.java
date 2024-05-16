@@ -19,8 +19,7 @@ public class Comment {
      * Author of the comment.
      */
     @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+    private User user;
 
     /**
      * Link to image of comment author.
