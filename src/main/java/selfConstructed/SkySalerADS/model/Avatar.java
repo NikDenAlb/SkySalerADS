@@ -16,7 +16,6 @@ import javax.persistence.*;
 public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "avatar")
     private Integer Id;
 
     private String name;
@@ -26,7 +25,6 @@ public class Avatar {
     private String path;
 
     @Lob
-    @Column(name = "image")
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] image;
 

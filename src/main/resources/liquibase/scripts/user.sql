@@ -34,10 +34,9 @@ CREATE TABLE users
 );
 CREATE TABLE avatars
 (
-    avatar_id  BIGINT PRIMARY KEY,
-    file_path  VARCHAR(255),
-    file_size  BIGINT,
+    id         INT PRIMARY KEY,
+    file_size  INT,
     media_type VARCHAR(255),
     preview    TEXT,
-    user_id    BIGINT
+    user_id    INT
 );
