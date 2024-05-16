@@ -13,11 +13,9 @@ CREATE TABLE ad
 ;
 CREATE TABLE comment
 (
-    user_id         TEXT,
-    authorImage     TEXT,
-    authorFirstName TEXT,
+    user_link       INT,
     createdAt       TIMESTAMP,
-    pk              BIGINT PRIMARY KEY,
+    pk              INT PRIMARY KEY,
     text            TEXT
 );
 CREATE TABLE users
