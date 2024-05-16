@@ -28,4 +28,6 @@ public class Ad {
     private Integer price;
 
     private String title;
+
+    private String description;
 }
