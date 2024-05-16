@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import selfConstructed.SkySalerADS.model.AdImage;
 
 @Repository
-public interface AdImageRepository extends JpaRepository<AdImage,Long> {
+public interface AdImageRepository extends JpaRepository<AdImage, Integer> {
 }

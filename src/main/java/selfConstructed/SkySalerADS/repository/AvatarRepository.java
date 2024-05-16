@@ -6,7 +6,7 @@ import selfConstructed.SkySalerADS.model.User;
 
 import java.util.Optional;
 
-public interface AvatarRepository extends JpaRepository<Avatar, Long> {
+public interface AvatarRepository extends JpaRepository<Avatar, Integer> {
 
     Optional<Avatar> findAvatarByUser(User user);
 
