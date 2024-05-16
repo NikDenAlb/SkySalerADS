@@ -4,7 +4,7 @@
 
 CREATE TABLE ad
 (
-    user_link TEXT,
+    user_link INT,
     image     TEXT,
     pk        INT PRIMARY KEY,
     price     INT,
@@ -36,4 +36,11 @@ CREATE TABLE avatars
     type      VARCHAR(255),
     image     TEXT,
     user_link INT
+);
+CREATE TABLE ad_images
+(
+    id    INT PRIMARY KEY,
+    type  VARCHAR(255),
+    image TEXT,
+    ad    INT
 );
