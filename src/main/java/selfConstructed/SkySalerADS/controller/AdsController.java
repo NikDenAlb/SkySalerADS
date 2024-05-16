@@ -135,4 +135,36 @@ public class AdsController {
         adService.removeAd(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    /**
+     * Update ad by ad.pk
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ads was updated ",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User Unauthorized"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PatchMapping("{id}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<AdDTO> updateAds(@PathVariable Integer id,
+                                            @RequestBody CreateOrUpdateAdDTO inAdDTO) {
+        return new ResponseEntity<>(adService.updateAd(id, inAdDTO), HttpStatus.OK);
+    }
 }

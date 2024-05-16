@@ -85,21 +85,41 @@ public class AdServiceImpl implements AdService {
     @Override
     public void removeAd(Integer id) {
         log.info("removing ad with id {}", id);
+        User user = userService.getUserFromAuthentication();
+        chekAdandUser(id, user);
+
+        adRepository.deleteById(id);
+        log.info("ad with ad.pk=={} removed", id);
+    }
+
+    @Override
+    public AdDTO updateAd(Integer id, CreateOrUpdateAdDTO inAdDTO) {
+        log.info("trying to update ads");
+        if (inAdDTO.getDescription() == null || inAdDTO.getPrice() == null || inAdDTO.getTitle() == null) {
+            throw new NullPointerException("description and price and title are required");
+        }
+        User user = userService.getUserFromAuthentication();
+        log.info("try to find ads by id");
+        chekAdandUser(id, user);
+        Ad ad = adRepository.findById(id).get();
+        Ad adUpdate = adMapper.toModel(inAdDTO, user);
+        ad.setTitle(adUpdate.getTitle());
+        ad.setPrice(adUpdate.getPrice());
+        ad.setDescription(adUpdate.getDescription());
+        log.info("The ad with id = {} is updated ", id);
+        return adMapper.toDTO(adRepository.save(ad));
+    }
+
+    private void chekAdandUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {
             log.warn("ad not found");
             throw new RuntimeException("ad not found");
         }
         Ad ad = optionalAd.get();
-
-
-        User user = userService.getUserFromAuthentication();
         if (!ad.getUser().equals(user) && !userService.isAdmin()) {
             log.warn("Request denied. ad's author = {}, but user = {}", ad.getUser().getUsername(), user.getUsername());
             throw new RuntimeException();
         }
-
-        adRepository.deleteById(id);
-        log.info("ad with ad.pk=={} removed", id);
     }
 }
