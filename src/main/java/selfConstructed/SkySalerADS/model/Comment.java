@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "comment")
+@Table
 public class Comment {
+
+    @ManyToOne
+    private Ad ad;
 
     @ManyToOne
     private User user;

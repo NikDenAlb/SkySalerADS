@@ -5,21 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import selfConstructed.SkySalerADS.dto.AdDTO;
-import selfConstructed.SkySalerADS.dto.AdsDTO;
-import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
-import selfConstructed.SkySalerADS.dto.FullAdDTO;
+import selfConstructed.SkySalerADS.dto.*;
 import selfConstructed.SkySalerADS.mapper.AdMapper;
+import selfConstructed.SkySalerADS.mapper.CommentMapper;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.AdImage;
+import selfConstructed.SkySalerADS.model.Comment;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.AdImageRepository;
 import selfConstructed.SkySalerADS.repository.AdRepository;
+import selfConstructed.SkySalerADS.repository.CommentRepository;
 import selfConstructed.SkySalerADS.service.AdService;
 import selfConstructed.SkySalerADS.service.UserService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +41,9 @@ public class AdServiceImpl implements AdService {
     private final AdImageRepository adImageRepository;
     private final AdMapper adMapper;
     private final ImageMapper imageMapper;
+    private final CommentMapper commentMapper;
     private final UserService userService;
+    private final CommentRepository commentRepository;
 
     @Transactional
     @Override
@@ -61,6 +65,8 @@ public class AdServiceImpl implements AdService {
         try {
             Ad newAd = adRepository.save(adMapper.toModel(inAdDTO, user));
             AdImage newAdImage = imageMapper.toAdImage(file);
+            newAdImage.setAd(newAd);
+            newAdImage.setType("image/jpeg");
 
             adImageRepository.save(newAdImage);
             newAd.setUser(user);
@@ -140,12 +146,85 @@ public class AdServiceImpl implements AdService {
             AdImage adImage = imageMapper.toAdImage(file);
             adImageRepository.deleteAdImageByAd(ad);
             adImage.setAd(ad);
+            adImage.setType("image/jpeg");
+            ad.setAdImage(adImage);
             adImageRepository.save(adImage);
         } catch (IOException e) {
             log.warn("unable to save image");
             throw new RuntimeException("unable to save image");
         }
         return ad.getAdImage().getImage();
+    }
+
+    @Override
+    public Ad getAd(int pk) {
+        Optional<Ad> ad = adRepository.findById(pk);
+        if (!ad.isPresent()) {
+            log.warn("ad with pk={} not found", pk);
+            throw new RuntimeException("ad not found");
+        }
+        return ad.get();
+    }
+
+    @Override
+    public CommentsDTO getAdComments(int id) {
+        log.info("try to get ad");
+        if (!adRepository.findById(id).isPresent()) {
+            throw new RuntimeException("ad not found");
+        }
+        Ad ad = adRepository.findById(id).get();
+        log.info("try to get ads comments");
+
+
+        List<CommentDTO> commentsDTO = commentRepository.findAllByAd(ad).stream()
+                .map(commentMapper::toDTO)
+                .sorted(Comparator.comparing(CommentDTO::getCreatedAt))
+                .collect(Collectors.toList());
+        return new CommentsDTO(commentsDTO);
+
+    }
+
+    @Override
+    public AdImage getAdImageById(int id) {
+        Optional<AdImage> adImage = adImageRepository.findById(id);
+        if (!adImage.isPresent()) {
+            log.warn("adImage ia not  by id {}", id);
+            throw new RuntimeException("adImage not found");
+        }
+        return adImage.get();
+    }
+
+    @Override
+    public CommentDTO createComment(Integer id, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+
+        Ad ad = getAd(id);
+        User user = userService.getUserFromAuthentication();
+
+        log.info("try to create comment for found by id ads");
+        Comment comment = commentMapper.toModel(createOrUpdateCommentDTO);
+
+        comment.setUser(user);
+        comment.setAd(ad);
+        comment.setCreatedAt(LocalDateTime.now());
+
+        comment = commentRepository.save(comment);
+
+
+        return commentMapper.toDTO(comment);
+    }
+
+    @Override
+    public void deleteComment(int adId, int commentId) {
+        log.info("try to remove comment for ads by comment id and ads id");
+        commentRepository.deleteById(commentId);
+    }
+
+    @Override
+    public CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        Comment comment = commentRepository.findById(commentId).get();
+        comment.setText(createOrUpdateCommentDTO.getText());
+        commentRepository.save(comment);
+        return commentMapper.toDTO(comment);
     }
 
     private void chekAdandUser(Integer id, User user) {

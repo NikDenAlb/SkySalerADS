@@ -22,7 +22,7 @@ public interface AdMapper {
         if (adImage == null) {
             return null;
         }
-        return "/users/image/" + adImage.getId();
+        return "/ads/image/" + adImage.getId();
     }
 
     @Mapping(target = "adImage", ignore = true)

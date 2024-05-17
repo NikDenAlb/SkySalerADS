@@ -60,13 +60,13 @@ public interface UserService {
 
     /**
      * Update Avatar
-       * @throws BrokenImageUpdateException if update didn't work
+     *
+     * @throws BrokenImageUpdateException if update didn't work
      */
     void updateUserAvatar(MultipartFile file);
 
     @Transactional
     Optional<Avatar> getAvatarByUserId(User user);
-
 
     User getUser(Integer id);
 
