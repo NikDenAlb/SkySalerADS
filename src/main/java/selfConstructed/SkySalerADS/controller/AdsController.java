@@ -292,4 +292,41 @@ public class AdsController {
                                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return new ResponseEntity<>(adService.createComment(id, createOrUpdateCommentDTO), HttpStatus.CREATED);
     }
+
+    /**
+     * Delete comment from ad
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Comment was deleted",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = CommentsDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "No content"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not Found"
+            )
+    })
+    @DeleteMapping("{adId}/comments/{commentId}")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<CommentDTO> deleteAdsComment(@PathVariable int adId,
+                                                       @PathVariable int commentId) {
+        adService.deleteComment(adId, commentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

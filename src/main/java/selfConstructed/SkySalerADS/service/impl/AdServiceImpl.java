@@ -223,6 +223,12 @@ public class AdServiceImpl implements AdService {
         return commentMapper.toDto(comment);
     }
 
+    @Override
+    public void deleteComment(int adId, int commentId) {
+        log.info("try to remove comment for ads by comment id and ads id");
+        commentRepository.deleteById(commentId);
+    }
+
     private void chekAdandUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {

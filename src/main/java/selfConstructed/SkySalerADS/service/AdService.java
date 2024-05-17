@@ -37,4 +37,6 @@ public interface AdService {
     AdImage getAdImageById(int id);
 
     CommentDTO createComment(Integer id, CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
+
+    void deleteComment(int adId, int commentId);
 }
