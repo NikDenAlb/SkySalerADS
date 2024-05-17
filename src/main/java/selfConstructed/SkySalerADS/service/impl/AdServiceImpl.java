@@ -11,6 +11,7 @@ import selfConstructed.SkySalerADS.mapper.CommentMapper;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.AdImage;
+import selfConstructed.SkySalerADS.model.Comment;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.AdImageRepository;
 import selfConstructed.SkySalerADS.repository.AdRepository;
@@ -19,6 +20,7 @@ import selfConstructed.SkySalerADS.service.AdService;
 import selfConstructed.SkySalerADS.service.UserService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -154,7 +156,6 @@ public class AdServiceImpl implements AdService {
         return ad.getAdImage().getImage();
     }
 
-    @Transactional
     @Override
     public Ad getAd(int pk) {
         Optional<Ad> ad = adRepository.findById(pk);
@@ -201,6 +202,25 @@ public class AdServiceImpl implements AdService {
             throw new RuntimeException("adImage not found");
         }
         return adImage.get();
+    }
+
+    @Override
+    public CommentDTO createComment(Integer id, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+
+        Ad ad = getAd(id);
+        User user = userService.getUserFromAuthentication();
+
+        log.info("try to create comment for found by id ads");
+        Comment comment = commentMapper.toModel(createOrUpdateCommentDTO);
+
+        comment.setUser(user);
+        comment.setAd(ad);
+        comment.setCreatedAt(LocalDateTime.now());
+
+        comment = commentRepository.save(comment);
+
+
+        return commentMapper.toDto(comment);
     }
 
     private void chekAdandUser(Integer id, User user) {

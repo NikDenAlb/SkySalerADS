@@ -35,4 +35,6 @@ public interface AdService {
     CommentsDTO getAdComments(int id);
 
     AdImage getAdImageById(int id);
+
+    CommentDTO createComment(Integer id, CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
 }

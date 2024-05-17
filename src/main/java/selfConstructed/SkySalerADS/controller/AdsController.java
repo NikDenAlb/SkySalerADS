@@ -222,6 +222,7 @@ public class AdsController {
         headers.setContentLength(file.getSize());
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adService.updateAdImage(id, file));
     }
+
     @GetMapping(value = "/image/{id}")
     public ResponseEntity<byte[]> downloadAdImage(@PathVariable String id) {
         AdImage adImage = adService.getAdImageById(Integer.parseInt(id));
@@ -258,5 +259,37 @@ public class AdsController {
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<CommentsDTO> getAdsComments(@PathVariable Integer id) {
         return new ResponseEntity<>(adService.getAdComments(id), HttpStatus.OK);
+    }
+
+    /**
+     * Create comment to ad
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Created comment to ads",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = CommentsDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Action Forbidden"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @PostMapping("{id}/comments")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<CommentDTO> addAdsComment(@PathVariable Integer id,
+                                                    @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        return new ResponseEntity<>(adService.createComment(id, createOrUpdateCommentDTO), HttpStatus.CREATED);
     }
 }
