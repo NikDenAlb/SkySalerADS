@@ -224,7 +224,7 @@ public class AdsController {
     }
     @GetMapping(value = "/image/{id}")
     public ResponseEntity<byte[]> downloadAdImage(@PathVariable String id) {
-        AdImage adImage = adService.getAdImageByAd(adService.getAd(Integer.parseInt(id)));
+        AdImage adImage = adService.getAdImageById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(adImage.getType()));
         headers.setContentLength(adImage.getImage().length);

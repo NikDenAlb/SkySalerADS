@@ -33,4 +33,6 @@ public interface AdService {
     AdImage getAdImageByAd(Ad ad);
 
     CommentsDTO getAdComments(int id);
+
+    AdImage getAdImageById(int id);
 }

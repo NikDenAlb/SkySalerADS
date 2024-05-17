@@ -193,6 +193,16 @@ public class AdServiceImpl implements AdService {
 
     }
 
+    @Override
+    public AdImage getAdImageById(int id) {
+        Optional<AdImage> adImage = adImageRepository.findById(id);
+        if (!adImage.isPresent()) {
+            log.warn("adImage ia not  by id {}", id);
+            throw new RuntimeException("adImage not found");
+        }
+        return adImage.get();
+    }
+
     private void chekAdandUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {
