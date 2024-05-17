@@ -10,9 +10,6 @@ import selfConstructed.SkySalerADS.model.Comment;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-//    CommentDTO toDTO(Comment comment);
-//
-//    Comment toModel(CommentDTO commentDTO);
 
     @Mapping(target = "author", source = "comment.user.id")
     @Mapping(target = "authorImage", expression = "java(getImageLink(comment.getUser().getAvatar()))")
@@ -20,10 +17,10 @@ public interface CommentMapper {
     @Mapping(target = "createdAt", expression = "java(java.sql.Timestamp.valueOf(comment.getCreatedAt()).getTime())")
     CommentDTO toDTO(Comment comment);
 
-    @Mapping(target = "ad",ignore = true)
-    @Mapping(target = "user",ignore = true)
-    @Mapping(target = "createdAt",ignore = true)
-    @Mapping(target = "pk",ignore = true)
+    @Mapping(target = "ad", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "pk", ignore = true)
     Comment toModel(CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
 
 

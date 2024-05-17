@@ -167,16 +167,6 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdImage getAdImageByAd(Ad ad) {
-        Optional<AdImage> adImage = adImageRepository.findByAd(ad);
-        if (!adImage.isPresent()) {
-            log.warn("adImage ia not found");
-            throw new RuntimeException("adImage not found");
-        }
-        return adImage.get();
-    }
-
-    @Override
     public CommentsDTO getAdComments(int id) {
         log.info("try to get ad");
         if (!adRepository.findById(id).isPresent()) {

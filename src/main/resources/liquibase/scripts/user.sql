@@ -29,7 +29,7 @@ CREATE TABLE users
     role       TEXT,
     avatar     INT
 );
-CREATE TABLE avatars
+CREATE TABLE avatar
 (
     id      INT PRIMARY KEY,
     type    VARCHAR(255),

@@ -329,9 +329,9 @@ public class AdsController {
         adService.deleteComment(adId, commentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     /**
      * Update ads comment
-     *
      */
     @ApiResponses({
             @ApiResponse(
@@ -358,8 +358,8 @@ public class AdsController {
     @PatchMapping("{adsId}/comments/{commentId}")
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<CommentDTO> updateAdsComment(@PathVariable int adsId,
-                                                          @PathVariable int commentId,
-                                                          @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO
+                                                       @PathVariable int commentId,
+                                                       @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO
     ) {
         return new ResponseEntity<>(adService.updateComment(adsId, commentId, createOrUpdateCommentDTO), HttpStatus.OK);
     }
