@@ -74,7 +74,7 @@ public class AdsController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<AdDTO> addAd(@RequestPart(value = "properties") CreateOrUpdateAdDTO inAdDTO,
-                                       @RequestPart(value = "file") MultipartFile file) {
+                                       @RequestPart(value = "image") MultipartFile file) {
         return new ResponseEntity<>(adService.addAd(inAdDTO, file), HttpStatus.CREATED);
     }
 
