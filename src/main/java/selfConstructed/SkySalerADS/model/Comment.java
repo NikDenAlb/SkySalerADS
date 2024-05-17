@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @ManyToOne
+    private Ad ad;
+
+    @ManyToOne
     private User user;
 
     private LocalDateTime createdAt;

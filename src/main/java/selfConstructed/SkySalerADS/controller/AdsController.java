@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import selfConstructed.SkySalerADS.dto.AdDTO;
-import selfConstructed.SkySalerADS.dto.AdsDTO;
-import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
-import selfConstructed.SkySalerADS.dto.FullAdDTO;
+import selfConstructed.SkySalerADS.dto.*;
 import selfConstructed.SkySalerADS.model.AdImage;
 import selfConstructed.SkySalerADS.service.AdService;
 
@@ -232,5 +229,34 @@ public class AdsController {
         headers.setContentType(MediaType.parseMediaType(adImage.getType()));
         headers.setContentLength(adImage.getImage().length);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adImage.getImage());
+    }
+
+//////////////////////////////////////////comments/////////////////////////////////
+
+    /**
+     * Get comment from ad
+     */
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Get comment from ads",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = CommentsDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized User"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ads Not Found"
+            )
+    })
+    @GetMapping("{id}/comments")
+    @PreAuthorize("hasAuthority('user_basic_access')")
+    public ResponseEntity<CommentsDTO> getAdsComments(@PathVariable Integer id) {
+        return new ResponseEntity<>(adService.getAdComments(id), HttpStatus.OK);
     }
 }

@@ -5,21 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import selfConstructed.SkySalerADS.dto.AdDTO;
-import selfConstructed.SkySalerADS.dto.AdsDTO;
-import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
-import selfConstructed.SkySalerADS.dto.FullAdDTO;
+import selfConstructed.SkySalerADS.dto.*;
 import selfConstructed.SkySalerADS.mapper.AdMapper;
+import selfConstructed.SkySalerADS.mapper.CommentMapper;
 import selfConstructed.SkySalerADS.mapper.ImageMapper;
 import selfConstructed.SkySalerADS.model.Ad;
 import selfConstructed.SkySalerADS.model.AdImage;
 import selfConstructed.SkySalerADS.model.User;
 import selfConstructed.SkySalerADS.repository.AdImageRepository;
 import selfConstructed.SkySalerADS.repository.AdRepository;
+import selfConstructed.SkySalerADS.repository.CommentRepository;
 import selfConstructed.SkySalerADS.service.AdService;
 import selfConstructed.SkySalerADS.service.UserService;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +39,9 @@ public class AdServiceImpl implements AdService {
     private final AdImageRepository adImageRepository;
     private final AdMapper adMapper;
     private final ImageMapper imageMapper;
+    private final CommentMapper commentMapper;
     private final UserService userService;
+    private final CommentRepository commentRepository;
 
     @Transactional
     @Override
@@ -171,6 +173,24 @@ public class AdServiceImpl implements AdService {
             throw new RuntimeException("adImage not found");
         }
         return adImage.get();
+    }
+
+    @Override
+    public CommentsDTO getAdComments(int id) {
+        log.info("try to get ad");
+        if (!adRepository.findById(id).isPresent()) {
+            throw new RuntimeException("ad not found");
+        }
+        Ad ad = adRepository.findById(id).get();
+        log.info("try to get ads comments");
+
+
+        List<CommentDTO> commentsDTO = commentRepository.findAllByAd(ad).stream()
+                .map(commentMapper::toDto)
+                .sorted(Comparator.comparing(CommentDTO::getCreatedAt))
+                .collect(Collectors.toList());
+        return new CommentsDTO(commentsDTO);
+
     }
 
     private void chekAdandUser(Integer id, User user) {

@@ -4,16 +4,17 @@
 
 CREATE TABLE ad
 (
-    user_link INT,
-    image     TEXT,
-    pk        INT PRIMARY KEY,
-    price     INT,
-    title     TEXT
+    user_id INT,
+    image   TEXT,
+    pk      INT PRIMARY KEY,
+    price   INT,
+    title   TEXT
 )
 ;
 CREATE TABLE comment
 (
-    user_link INT,
+    ad        INT,
+    user_id   INT,
     createdAt TIMESTAMP,
     pk        INT PRIMARY KEY,
     text      TEXT
@@ -30,10 +31,10 @@ CREATE TABLE users
 );
 CREATE TABLE avatars
 (
-    id        INT PRIMARY KEY,
-    type      VARCHAR(255),
-    image     TEXT,
-    user_link INT
+    id      INT PRIMARY KEY,
+    type    VARCHAR(255),
+    image   TEXT,
+    user_id INT
 );
 CREATE TABLE ad_image
 (
