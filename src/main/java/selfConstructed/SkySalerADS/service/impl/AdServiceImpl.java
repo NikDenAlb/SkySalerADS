@@ -187,7 +187,7 @@ public class AdServiceImpl implements AdService {
 
 
         List<CommentDTO> commentsDTO = commentRepository.findAllByAd(ad).stream()
-                .map(commentMapper::toDto)
+                .map(commentMapper::toDTO)
                 .sorted(Comparator.comparing(CommentDTO::getCreatedAt))
                 .collect(Collectors.toList());
         return new CommentsDTO(commentsDTO);
@@ -220,13 +220,21 @@ public class AdServiceImpl implements AdService {
         comment = commentRepository.save(comment);
 
 
-        return commentMapper.toDto(comment);
+        return commentMapper.toDTO(comment);
     }
 
     @Override
     public void deleteComment(int adId, int commentId) {
         log.info("try to remove comment for ads by comment id and ads id");
         commentRepository.deleteById(commentId);
+    }
+
+    @Override
+    public CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        Comment comment = commentRepository.findById(commentId).get();
+        comment.setText(createOrUpdateCommentDTO.getText());
+        commentRepository.save(comment);
+        return commentMapper.toDTO(comment);
     }
 
     private void chekAdandUser(Integer id, User user) {

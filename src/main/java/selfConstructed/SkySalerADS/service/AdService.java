@@ -39,4 +39,6 @@ public interface AdService {
     CommentDTO createComment(Integer id, CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
 
     void deleteComment(int adId, int commentId);
+
+    CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
 }

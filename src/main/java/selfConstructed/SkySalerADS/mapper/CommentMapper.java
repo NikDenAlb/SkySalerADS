@@ -18,7 +18,7 @@ public interface CommentMapper {
     @Mapping(target = "authorImage", expression = "java(getImageLink(comment.getUser().getAvatar()))")
     @Mapping(target = "authorFirstName", source = "comment.user.firstName")
     @Mapping(target = "createdAt", expression = "java(java.sql.Timestamp.valueOf(comment.getCreatedAt()).getTime())")
-    CommentDTO toDto(Comment comment);
+    CommentDTO toDTO(Comment comment);
 
     @Mapping(target = "ad",ignore = true)
     @Mapping(target = "user",ignore = true)
