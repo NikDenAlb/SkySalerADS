@@ -13,10 +13,10 @@ CREATE TABLE ad
 ;
 CREATE TABLE comment
 (
-    user_link       INT,
-    createdAt       TIMESTAMP,
-    pk              INT PRIMARY KEY,
-    text            TEXT
+    user_link INT,
+    createdAt TIMESTAMP,
+    pk        INT PRIMARY KEY,
+    text      TEXT
 );
 CREATE TABLE users
 (
@@ -26,7 +26,7 @@ CREATE TABLE users
     last_name  TEXT,
     phone      TEXT,
     role       TEXT,
-    avatar     TEXT
+    avatar     INT
 );
 CREATE TABLE avatars
 (
@@ -35,7 +35,7 @@ CREATE TABLE avatars
     image     TEXT,
     user_link INT
 );
-CREATE TABLE ad_images
+CREATE TABLE ad_image
 (
     id    INT PRIMARY KEY,
     type  VARCHAR(255),

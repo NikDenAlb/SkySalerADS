@@ -61,6 +61,8 @@ public class AdServiceImpl implements AdService {
         try {
             Ad newAd = adRepository.save(adMapper.toModel(inAdDTO, user));
             AdImage newAdImage = imageMapper.toAdImage(file);
+            newAdImage.setAd(newAd);
+            newAdImage.setType("image/jpeg");
 
             adImageRepository.save(newAdImage);
             newAd.setUser(user);
@@ -140,12 +142,35 @@ public class AdServiceImpl implements AdService {
             AdImage adImage = imageMapper.toAdImage(file);
             adImageRepository.deleteAdImageByAd(ad);
             adImage.setAd(ad);
+            adImage.setType("image/jpeg");
+            ad.setAdImage(adImage);
             adImageRepository.save(adImage);
         } catch (IOException e) {
             log.warn("unable to save image");
             throw new RuntimeException("unable to save image");
         }
         return ad.getAdImage().getImage();
+    }
+
+    @Transactional
+    @Override
+    public Ad getAd(int pk) {
+        Optional<Ad> ad = adRepository.findById(pk);
+        if (!ad.isPresent()) {
+            log.warn("ad with pk={} not found", pk);
+            throw new RuntimeException("ad not found");
+        }
+        return ad.get();
+    }
+
+    @Override
+    public AdImage getAdImageByAd(Ad ad) {
+        Optional<AdImage> adImage = adImageRepository.findByAd(ad);
+        if (!adImage.isPresent()) {
+            log.warn("adImage ia not found");
+            throw new RuntimeException("adImage not found");
+        }
+        return adImage.get();
     }
 
     private void chekAdandUser(Integer id, User user) {

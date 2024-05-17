@@ -17,6 +17,7 @@ import selfConstructed.SkySalerADS.dto.AdDTO;
 import selfConstructed.SkySalerADS.dto.AdsDTO;
 import selfConstructed.SkySalerADS.dto.CreateOrUpdateAdDTO;
 import selfConstructed.SkySalerADS.dto.FullAdDTO;
+import selfConstructed.SkySalerADS.model.AdImage;
 import selfConstructed.SkySalerADS.service.AdService;
 
 import java.util.Objects;
@@ -223,5 +224,13 @@ public class AdsController {
         headers.setContentType(MediaType.parseMediaType(Objects.requireNonNull(file.getContentType())));
         headers.setContentLength(file.getSize());
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adService.updateAdImage(id, file));
+    }
+    @GetMapping(value = "/image/{id}")
+    public ResponseEntity<byte[]> downloadAdImage(@PathVariable String id) {
+        AdImage adImage = adService.getAdImageByAd(adService.getAd(Integer.parseInt(id)));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(adImage.getType()));
+        headers.setContentLength(adImage.getImage().length);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(adImage.getImage());
     }
 }
