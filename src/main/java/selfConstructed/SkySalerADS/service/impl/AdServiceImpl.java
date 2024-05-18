@@ -97,7 +97,7 @@ public class AdServiceImpl implements AdService {
     public void removeAd(Integer id) {
         log.info("removing ad with id {}", id);
         User user = userService.getUserFromAuthentication();
-        chekAdandUser(id, user);
+        chekAdAndUser(id, user);
 
         adRepository.deleteById(id);
         log.info("ad with ad.pk=={} removed", id);
@@ -112,7 +112,7 @@ public class AdServiceImpl implements AdService {
         }
         User user = userService.getUserFromAuthentication();
         log.info("try to find ads by id");
-        chekAdandUser(id, user);
+        chekAdAndUser(id, user);
         Ad ad = adRepository.findById(id).get();
         Ad adUpdate = adMapper.toModel(inAdDTO, user);
         ad.setTitle(adUpdate.getTitle());
@@ -140,7 +140,7 @@ public class AdServiceImpl implements AdService {
     public byte[] updateAdImage(Integer id, MultipartFile file) {
         log.info("try to update ad image");
         User user = userService.getUserFromAuthentication();
-        chekAdandUser(id, user);
+        chekAdAndUser(id, user);
         Ad ad = adRepository.findById(id).get();
         try {
             AdImage adImage = imageMapper.toAdImage(file);
@@ -221,13 +221,17 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        log.info("updating comment {}", commentId);
+        User user = userService.getUserFromAuthentication();
+        chekAdAndUser(adsId, user);
         Comment comment = commentRepository.findById(commentId).get();
         comment.setText(createOrUpdateCommentDTO.getText());
         commentRepository.save(comment);
+        log.info("comment updated");
         return commentMapper.toDTO(comment);
     }
 
-    private void chekAdandUser(Integer id, User user) {
+    private void chekAdAndUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {
             log.warn("ad not found");
