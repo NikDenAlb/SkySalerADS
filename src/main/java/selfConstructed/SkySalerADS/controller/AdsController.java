@@ -104,7 +104,6 @@ public class AdsController {
             )
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<FullAdDTO> getFullAds(@PathVariable Integer id) {
         return new ResponseEntity<>(adService.getFullAdDTO(id), HttpStatus.OK);
     }
