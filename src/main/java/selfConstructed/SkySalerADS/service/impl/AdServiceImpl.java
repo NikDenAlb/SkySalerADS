@@ -95,10 +95,10 @@ public class AdServiceImpl implements AdService {
     @Transactional
     @Override
     public void removeAd(Integer id) {
-        log.info("removing ad with id {}", id);
+        log.info("removing ad with id = {}", id);
         User user = userService.getUserFromAuthentication();
-        chekAdandUser(id, user);
-
+        chekAdAndUser(id, user);
+        adImageRepository.deleteById(adRepository.findById(id).get().getAdImage().getId());
         adRepository.deleteById(id);
         log.info("ad with ad.pk=={} removed", id);
     }
@@ -112,7 +112,7 @@ public class AdServiceImpl implements AdService {
         }
         User user = userService.getUserFromAuthentication();
         log.info("try to find ads by id");
-        chekAdandUser(id, user);
+        chekAdAndUser(id, user);
         Ad ad = adRepository.findById(id).get();
         Ad adUpdate = adMapper.toModel(inAdDTO, user);
         ad.setTitle(adUpdate.getTitle());
@@ -140,13 +140,13 @@ public class AdServiceImpl implements AdService {
     public byte[] updateAdImage(Integer id, MultipartFile file) {
         log.info("try to update ad image");
         User user = userService.getUserFromAuthentication();
-        chekAdandUser(id, user);
+        chekAdAndUser(id, user);
         Ad ad = adRepository.findById(id).get();
         try {
             AdImage adImage = imageMapper.toAdImage(file);
             adImageRepository.deleteAdImageByAd(ad);
             adImage.setAd(ad);
-            adImage.setType("image/jpeg");
+            adImage.setType(file.getContentType());
             ad.setAdImage(adImage);
             adImageRepository.save(adImage);
         } catch (IOException e) {
@@ -215,19 +215,30 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public void deleteComment(int adId, int commentId) {
-        log.info("try to remove comment for ads by comment id and ads id");
+        log.info("deleting comment {}", commentId);
+        User user = userService.getUserFromAuthentication();
+        chekAdAndUser(adId, user);
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if (!comment.isPresent()) {
+            log.info("comment {} not found", commentId);
+            throw new RuntimeException("comment not found");
+        }
         commentRepository.deleteById(commentId);
     }
 
     @Override
-    public CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+    public CommentDTO updateComment(int adId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+        log.info("updating comment {}", commentId);
+        User user = userService.getUserFromAuthentication();
+        chekAdAndUser(adId, user);
         Comment comment = commentRepository.findById(commentId).get();
         comment.setText(createOrUpdateCommentDTO.getText());
         commentRepository.save(comment);
+        log.info("comment updated");
         return commentMapper.toDTO(comment);
     }
 
-    private void chekAdandUser(Integer id, User user) {
+    private void chekAdAndUser(Integer id, User user) {
         Optional<Ad> optionalAd = adRepository.findById(id);
         if (!optionalAd.isPresent()) {
             log.warn("ad not found");

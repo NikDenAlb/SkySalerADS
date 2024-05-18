@@ -121,15 +121,15 @@ public class UserServiceImpl implements UserService {
     public void updateUserAvatar(MultipartFile file) {
         log.info("Updating image");
         User user = getUserFromAuthentication();
-        log.info("The userDto is found, updating...");
+        log.info("The userDTO is found, updating...");
         if (avatarRepository.findAvatarByUser(user).isPresent()) {
-            log.info("if avatar is found, delete it");
             avatarRepository.deleteAvatarByUser(user);
         }
         try {
 
             Avatar newAvatar = imageMapper.toAvatar(file);
             newAvatar.setUser(user);
+            newAvatar.setType(file.getContentType());
             avatarRepository.save(newAvatar);
             user.setAvatar(newAvatar);
             log.info("Avatar is updated");

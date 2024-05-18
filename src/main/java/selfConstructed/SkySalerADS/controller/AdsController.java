@@ -104,7 +104,6 @@ public class AdsController {
             )
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user_basic_access')")
     public ResponseEntity<FullAdDTO> getFullAds(@PathVariable Integer id) {
         return new ResponseEntity<>(adService.getFullAdDTO(id), HttpStatus.OK);
     }
@@ -355,12 +354,12 @@ public class AdsController {
                     description = "Not Found"
             )
     })
-    @PatchMapping("{adsId}/comments/{commentId}")
+    @PatchMapping("{adId}/comments/{commentId}")
     @PreAuthorize("hasAuthority('user_basic_access')")
-    public ResponseEntity<CommentDTO> updateAdsComment(@PathVariable int adsId,
+    public ResponseEntity<CommentDTO> updateAdsComment(@PathVariable int adId,
                                                        @PathVariable int commentId,
                                                        @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO
     ) {
-        return new ResponseEntity<>(adService.updateComment(adsId, commentId, createOrUpdateCommentDTO), HttpStatus.OK);
+        return new ResponseEntity<>(adService.updateComment(adId, commentId, createOrUpdateCommentDTO), HttpStatus.OK);
     }
 }

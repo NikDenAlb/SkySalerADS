@@ -17,14 +17,6 @@ public interface AdMapper {
     @Mapping(target = "author", expression = "java(ad.getUser().getId())")
     AdDTO toDTO(Ad ad);
 
-    @Transactional
-    default String getImageLink(AdImage adImage) {
-        if (adImage == null) {
-            return null;
-        }
-        return "/ads/image/" + adImage.getId();
-    }
-
     @Mapping(target = "adImage", ignore = true)
     @Mapping(target = "pk", ignore = true)
     Ad toModel(CreateOrUpdateAdDTO preAdDTO, User user);
@@ -35,4 +27,12 @@ public interface AdMapper {
     @Mapping(target = "phone", source = "ad.user.phone")
     @Mapping(target = "image", expression = "java(getImageLink(ad.getAdImage()))")
     FullAdDTO toFullAdDTO(Ad ad);
+
+    @Transactional
+    default String getImageLink(AdImage adImage) {
+        if (adImage == null) {
+            return null;
+        }
+        return "/ads/image/" + adImage.getId();
+    }
 }

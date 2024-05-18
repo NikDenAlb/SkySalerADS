@@ -162,7 +162,7 @@ public class UserController {
     /**
      * Get {@link Avatar} of {@link User} by user.id
      */
-    @GetMapping(value = "/image/{id}")
+    @GetMapping(value = "/avatar/{id}")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable String id) {
         Optional<Avatar> avatarIn = userService.getAvatarByUserId(userService.getUser(Integer.parseInt(id)));
         if (!avatarIn.isPresent()) {
