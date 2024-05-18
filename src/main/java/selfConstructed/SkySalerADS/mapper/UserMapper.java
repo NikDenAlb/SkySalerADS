@@ -18,6 +18,6 @@ public interface UserMapper {
         if (avatar == null) {
             return null;
         }
-        return "/users/image/" + avatar.getId();
+        return "/users/avatar/" + avatar.getId();
     }
 }
