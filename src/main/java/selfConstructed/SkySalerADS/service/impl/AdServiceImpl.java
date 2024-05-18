@@ -95,7 +95,7 @@ public class AdServiceImpl implements AdService {
     @Transactional
     @Override
     public void removeAd(Integer id) {
-        log.info("removing ad with id {}", id);
+        log.info("removing ad with id = {}", id);
         User user = userService.getUserFromAuthentication();
         chekAdAndUser(id, user);
 
