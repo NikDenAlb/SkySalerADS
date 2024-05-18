@@ -146,7 +146,7 @@ public class AdServiceImpl implements AdService {
             AdImage adImage = imageMapper.toAdImage(file);
             adImageRepository.deleteAdImageByAd(ad);
             adImage.setAd(ad);
-            adImage.setType("image/jpeg");
+            adImage.setType(file.getContentType());
             ad.setAdImage(adImage);
             adImageRepository.save(adImage);
         } catch (IOException e) {
@@ -215,15 +215,22 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public void deleteComment(int adId, int commentId) {
-        log.info("try to remove comment for ads by comment id and ads id");
+        log.info("deleting comment {}", commentId);
+        User user = userService.getUserFromAuthentication();
+        chekAdAndUser(adId, user);
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if (!comment.isPresent()) {
+            log.info("comment {} not found", commentId);
+            throw new RuntimeException("comment not found");
+        }
         commentRepository.deleteById(commentId);
     }
 
     @Override
-    public CommentDTO updateComment(int adsId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+    public CommentDTO updateComment(int adId, int commentId, CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         log.info("updating comment {}", commentId);
         User user = userService.getUserFromAuthentication();
-        chekAdAndUser(adsId, user);
+        chekAdAndUser(adId, user);
         Comment comment = commentRepository.findById(commentId).get();
         comment.setText(createOrUpdateCommentDTO.getText());
         commentRepository.save(comment);
