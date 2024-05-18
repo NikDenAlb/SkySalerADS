@@ -98,7 +98,7 @@ public class AdServiceImpl implements AdService {
         log.info("removing ad with id = {}", id);
         User user = userService.getUserFromAuthentication();
         chekAdAndUser(id, user);
-
+        adImageRepository.deleteById(adRepository.findById(id).get().getAdImage().getId());
         adRepository.deleteById(id);
         log.info("ad with ad.pk=={} removed", id);
     }
